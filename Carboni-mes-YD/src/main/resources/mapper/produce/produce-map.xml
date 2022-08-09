@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.carboni.prj.produce.mapper.ProdMapper">
+	
+	<!-- 생산계획관리 -->
+		<!-- 생산계획검색 -->
+		<select id="searchPlan" resultType="co.carboni.prj.produce.vo.ProdPlanVO">
+			SELECT ppdate, ppnum, ppname, ppnote
+			FROM prodplan
+			WHERE (ppdate BETWEEN to_date(#{pstartDt}, 'yyyy-MM-dd') AND to_date(#{pendDt}, 'yyyy-MM-dd'))
+			AND ppstatus =
+			<if test="pstatus == '미지시'">'미지시'</if>
+			<if test="pstatus == '지시진행'">'지시진행'</if>
+			ORDER BY ppnum ASC
+		</select>
+		
+		<!-- 생산계획로드 -->
+		<select id="prodPlan" resultType="co.carboni.prj.produce.vo.ProdPlanVO">
+			SELECT ppnum, ppdate, ppname, ppnote, ppstatus
+			FROM prodplan
+			WHERE ppnum = #{findNum}
+		</select>
+		
+		<!-- 생산계획상세로드 -->
+		<select id="prodPlanDetail" resultType="co.carboni.prj.produce.vo.ProdPlanVO">
+			SELECT p.ppdnum, p.gicode, g.giname, (g.giunit||(select cexplain from common where ccodeid = '17')) as giunit, p.prnum, r.prclose, c.cnrest, p.ppdam, p.uplam, p.ppddate
+			FROM prodplan_d p, goodsinfo g, prodreq r, contract c
+			WHERE
+			p.gicode = g.gicode
+			AND
+			p.prnum = r.prnum
+			AND
+			r.cnnum = c.cnnum
+			AND
+			p.ppdnum LIKE #{findDNum}||'%'
+		</select>
+		
+		<!-- 미생산의뢰조회 -->
+		<select id="findUnprod" resultType="co.carboni.prj.produce.vo.ProdPlanVO">
+			SELECT x.prnum, y.cndate, z.csname, x.prclose
+			FROM prodreq x, contract y, costomer z
+			WHERE x.cnnum = y.cnnum
+			AND y.cscode = z.cscode
+			AND (x.prclose BETWEEN to_date(#{startDt}, 'yyyy-MM-dd') AND to_date(#{endDt}, 'yyyy-MM-dd'))
+			AND x.prstatus = 'N'
+		</select>
+		
+		<!-- 미생산주문에 들어있는 제품 목록 -->
+		<select id="planProduct" resultType="co.carboni.prj.produce.vo.ProdPlanVO">
+			SELECT z.gicode, z.giname, (z.giunit||(select cexplain from common where ccodeid = '17')) as giunit, x.prnum, x.prclose, y.cnrest
+			FROM prodreq x, contract y, goodsinfo z
+			WHERE y.cnnum = x.cnnum
+			AND y.gicode = z.gicode
+			AND x.prnum IN
+			<foreach collection="rqNum" item="arr" open="(" separator="," close=")">
+				#{arr}
+			</foreach>
+		</select>
+		
+		<!-- 제품목록에 있는 제품 선택했을 때 필요 자재 정보 뜨기 -->
+		<select id="matList" resultType="co.carboni.prj.produce.vo.ProdPlanVO">
+			SELECT c.gicode, b.micode, m.miname, b.bam, c.cnrest, t.msciam
+			FROM prodreq p, contract c, bom b, matinfo m, matstk t
+			WHERE p.cnnum = c.cnnum
+			AND c.gicode = b.gicode
+			AND b.micode = m.micode
+			AND m.micode = t.micode
+			AND p.prnum = #{prn}
+		</select>
+		
+		<!-- 자재발주요청 -->
+		<insert id="requestMat">
+			INSERT INTO matreq
+			VALUES ('MR-'||TO_CHAR(matreq_REQNUM_seq.nextval), #{micode}, #{orderAmount}, '발주전')
+		</insert>
+		
+		<!-- 생산계획등록 -->
+		<insert id="addProdPlan" parameterType="co.carboni.prj.produce.vo.ProdPlanVO" useGeneratedKeys="true" keyColumn="ppnum" keyProperty="ppnum">
+			INSERT INTO prodplan
+			VALUES (('PP-'||PRODPLAN_PPNUM_SEQ.nextval), #{ppdate}, #{ppname}, '미지시', #{ppnote})
+			<selectKey resultType="string" keyProperty="ppnum" order="AFTER">
+				SELECT 'PP-'||max(TO_NUMBER(SUBSTR(ppnum, 4))) AS ppnum FROM prodplan
+			</selectKey>
+		</insert>
+		
+		
+		<!-- 생산계획상세등록 -->
+		<insert id="addPPlanDetail" parameterType="co.carboni.prj.produce.vo.ProdPlanVO">
+			INSERT INTO prodplan_d
+			VALUES
+			(#{ppdnum}, #{ppnum}, #{prnum, jdbcType=VARCHAR}, #{gicode}, TO_NUMBER(#{ppdam}), TO_NUMBER(#{uplam}), #{ppddate})
+		</insert>
+		
+		<!-- 생산계획등록시 생산의뢰관리 상태변경 -->
+		<update id="updatePReqStat" parameterType="co.carboni.prj.produce.vo.ProdPlanVO">
+			UPDATE prodreq
+			SET PRSTATUS = 'Y'
+			WHERE prnum = #{prnum}
+		</update>
+		
+		<!-- 생산계획수정 -->
+		<update id="updateProdPlan" parameterType="co.carboni.prj.produce.vo.ProdPlanVO">
+			UPDATE prodplan
+			SET ppname = #{ppname}, ppnote = #{ppnote}
+			WHERE ppnum = #{ppnum}
+		</update>
+		
+		<!-- 생산계획상세 삭제 -->
+		<delete id="delupPPdetail" parameterType="co.carboni.prj.produce.vo.ProdPlanVO">
+			DELETE FROM prodplan_d
+			WHERE ppdnum like #{ppnum}||'%'
+		</delete>
+		
+		<!-- 생산계획상세수정 -->
+	<!-- 	<update id="upPPlanDetail" parameterType="co.carboni.prj.produce.vo.ProdPlanVO">
+			UPDATE prodplan_d
+			SET ppdam = TO_NUMBER(#{ppdam}), uplam = TO_NUMBER(#{uplam}), ppddate = #{ppddate}
+			WHERE ppdnum = #{ppdnum}
+		</update> -->
+		
+		<!-- 생산계획, 계획상세 삭제 + 생산의뢰 상태변경 -->
+		<update id="removeProdPlan" parameterType="co.carboni.prj.produce.vo.ProdPlanVO" statementType="CALLABLE">
+			<![CDATA[{call update_preqstatus(#{ppnum})}]]>
+		</update>
+		
+	
+	<!-- 생산지시관리 -->
+	
+		<!-- 미지시계획조회 -->
+		<select id="unorderList" resultType="co.carboni.prj.produce.vo.ProdOrderVO">
+			SELECT ppnum, ppdate, ppname, ppnote
+			FROM prodplan
+			WHERE (ppdate BETWEEN to_date(#{startDt}, 'yyyy-MM-dd') AND to_date(#{endDt}, 'yyyy-MM-dd'))
+			AND
+			ppstatus = '미지시'
+		</select>
+		
+		<!-- 생산지시에 추가할 계획목록 -->
+		<select id="addPlan" resultType="co.carboni.prj.produce.vo.ProdOrderVO">
+			SELECT p.ppnum, p.ppname, g.giname, r.prclose, (d.ppdam+d.uplam) as ppadam, d.ppddate as pcdsdate, d.ppdnum, g.gicode, l.lineid
+			FROM prodplan p, prodplan_d d, goodsinfo g, prodreq r, lineinfo l
+			WHERE (p.ppnum = d.ppnum
+			AND
+			d.gicode = g.gicode
+			AND
+			g.gicode = l.gicode
+			AND
+			d.prnum = r.prnum)
+			AND
+			rownum = 1
+			AND
+			p.ppnum IN
+			<foreach collection="planNums" item="arr" open="(" separator="," close=")">
+				#{arr}
+			</foreach>
+		</select>
+		
+		<!-- 계획목록 제품 클릭시 제품, 자재정보 조회 -->
+		<select id="goodsInfo" resultType="co.carboni.prj.produce.vo.ProdOrderVO">
+			SELECT g.giname, m.micode, m.miname, b.bam, k.msciam
+			FROM goodsinfo g, bom b, matinfo m, matstk k
+			WHERE (g.gicode = b.gicode AND b.micode = m.micode AND m.micode = k.micode)
+			AND g.gicode = #{gic}
+		</select>
+		
+		<!-- 생산계획에 등록한 라인번호에 해당하는 공정정보 -->
+		<select id="procInfo" resultType="co.carboni.prj.produce.vo.ProdOrderVO">
+			SELECT * FROM procinfo
+			WHERE picodeid in (SELECT picodeid FROM lineinfo WHERE gicode = #{gic})
+		</select>
+		
+		<!-- 생산현장 담당자 등록을 위한 사원조회 -->
+		<select id="empList" resultType="co.carboni.prj.produce.vo.ProdOrderVO">
+			SELECT ecode, ename, eposition
+			FROM employee
+			WHERE eposition = #{posit}
+		</select>
+		
+		<!-- 생산지시등록 -->
+		<insert id="addProdOrder" parameterType="co.carboni.prj.produce.vo.ProdOrderVO" useGeneratedKeys="true" keyColumn="pcnum" keyProperty="pcnum">
+			INSERT INTO prodcomm
+			VALUES (('PC-'||PRODCOMM_PCNUM_SEQ.nextval), #{pcdate}, #{pcname}, '미공정', #{pcnote}, #{pcdkeeper})
+			<selectKey resultType="string" keyProperty="pcnum" order="AFTER">
+				SELECT 'PC-'||max(TO_NUMBER(SUBSTR(pcnum, 4))) AS pcnum FROM prodcomm
+			</selectKey>
+		</insert>
+		
+		<!-- 생산지시상세등록 -->
+		<update id="addPOrderDetail" parameterType="co.carboni.prj.produce.vo.ProdOrderVO" statementType="CALLABLE">
+			<![CDATA[{call add_proccomm_d(#{pcnum}, #{pcdnum}, #{lineid}, #{ppdnum}, #{gicode}, #{pcdam}, #{pcdsdate})}]]>
+		</update>
+		
+		
+		<!-- 재생산이 필요한 제품불량내역 -->
+		<select id="reprodList" resultType="co.carboni.prj.produce.vo.ProdOrderVO">
+			SELECT DISTINCT e.genum, e.gedate, e.phnum, e.gicode, g.giname, c.cexplaind, e.gedetail, e.gegdam, l.lineid
+			FROM goods_err e, common c, goodsinfo g, lineinfo l
+			WHERE (e.ccodeid = c.ccodeid(+) and e.gicode = g.gicode(+) and e.gicode = l.gicode(+))
+			AND e.gestatus = 'N'
+		</select>
+	
+		<!-- 생산지시수정 -->
+		<update id="updateOrder" parameterType="co.carboni.prj.produce.vo.ProdOrderVO">
+			update prodcomm
+			set pcname = #{pcname}, pcnote = #{pcnote}, pcdkeeper = #{pcdkeeper}
+			where pcnum = #{pcnum}
+		</update>
+		
+		<!-- 생산지시상세수정 -->
+		<update id="updateOrDetail" parameterType="co.carboni.prj.produce.vo.ProdOrderVO">
+			update proccomm_d
+			set pcdam = #{pcdam}, pcdsdate = #{pcdsdate}, pcdedate = #{pcdedate}
+			where pcdnum = #{pcdnum}
+		</update>
+		
+		
+		<!-- 생산지시검색 -->
+		<select id="searchOrder"  resultType="co.carboni.prj.produce.vo.ProdOrderVO">
+			SELECT pcnum, pcdate, pcname, pcdkeeper, pcnote
+			FROM prodcomm
+			WHERE (pcdate BETWEEN to_date(#{ostartDt}, 'yyyy-MM-dd') AND to_date(#{oendDt}, 'yyyy-MM-dd'))
+			AND pcstatus =
+			<if test="ostatus == '미공정'">'미공정'</if>
+			<if test="ostatus == '공정진행'">'공정진행'</if>
+			<if test="ostatus == '공정완료'">'공정완료'</if>
+			ORDER BY pcnum ASC
+		</select>
+		
+		<!-- 생산지시 페이지로드 -->
+		<select id="prodOrder" resultType="co.carboni.prj.produce.vo.ProdOrderVO">
+			SELECT pcnum, pcdate, pcname, pcdkeeper, pcnote, pcstatus
+			FROM prodcomm
+			WHERE pcnum = #{findNum}
+		</select>
+		
+		<!-- 생산지시상세 페이지로드 -->
+		<select id="prodOrderDetail" resultType="co.carboni.prj.produce.vo.ProdOrderVO">
+			SELECT p.ppnum, p.ppname, g.giname, r.prclose, c.lineid, (d.ppdam+d.uplam) as ppadam, c.pcdam, c.pcddiv, c.pcdsdate, c.pcdedate, c.gicode, c.pcnum, c.pcdnum
+			FROM proccomm_d c, prodplan p, prodplan_d d, goodsinfo g, prodreq r
+			WHERE (c.ppdnum = d.ppdnum and d.ppnum = p.ppnum and c.gicode = g.gicode and d.prnum = r.prnum)
+			AND c.pcnum LIKE #{findDNum}||'%'
+		</select>
+		
+		<!-- 생산지시삭제 -->
+		<update id="removeProdOrder" parameterType="co.carboni.prj.produce.vo.ProdOrderVO" statementType="CALLABLE">
+			<![CDATA[{call delete_prodcomm(#{pcnum})}]]>
+		</update>
+		
+		
+	<!-- 생산지시조회 -->
+		<!-- 생산지시 -->
+		<select id="orderView" resultType="co.carboni.prj.produce.vo.ProdOrderVO">
+			select p.pcdate, p.pcnum, p.pcname, d.gicode, g.giname, p.pcnote, d.pcdam, p.pcstatus, d.pcdsdate, d.pcdedate, d.pcddiv
+			from prodcomm p, proccomm_d d, goodsinfo g
+			where (p.pcnum = d.pcnum and d.gicode = g.gicode)
+			and p.pcdate between to_date(#{orderDtS}, 'yyyy-MM-dd') and to_date(#{orderDtE}, 'yyyy-MM-dd')
+			<if test="orderDiv != ''">and p.pcstatus = #{orderDiv}</if>
+		</select>
+			
+		<!-- 생산지시상세 -->	
+		<select id="orderDView" resultType="co.carboni.prj.produce.vo.ProdOrderVO">
+			SELECT p.pcnum, d.lineid, i.piname, i.pione, i.pitwo, i.pithree, i.pifour, p.pcdkeeper
+			FROM procinfo i, prodcomm p, proccomm_d d
+			WHERE (p.pcnum = d.pcnum)
+			and picodeid in (SELECT picodeid FROM lineinfo WHERE gicode = #{gicode})
+			and p.pcnum = #{pcnum}
+		</select>
+		
+	<!-- 공정모니터링 -->
+		<!-- 공정진행관리 -->
+
+			<!-- 생산지시목록 검색 -->
+			<select id="callOrder" resultType="co.carboni.prj.produce.vo.ProcMoniterVO">
+				SELECT c.pcnum, c.pcname, g.giname, d.pcdam
+				FROM prodcomm c, proccomm_d d, goodsinfo g
+				WHERE (c.pcnum = d.pcnum and d.gicode = g.gicode)
+				AND (d.pcdsdate = to_date(#{workDt}, 'yyyy-MM-dd') and c.pcstatus = '미공정')
+			</select>
+			
+			<!-- 진행생산지시 -->
+			<select id="loadOrder" resultType="co.carboni.prj.produce.vo.ProcMoniterVO">
+				SELECT c.pcnum, d.pcdnum, g.giname, g.gicode, d.pcdam, d.lineid, c.pcdkeeper
+				FROM prodcomm c, proccomm_d d, goodsinfo g
+				WHERE (c.pcnum = d.pcnum and d.gicode = g.gicode)
+				AND c.pcnum = #{findNum}
+			</select>
+			
+			<!-- 공정라인정보 -->
+			<select id="loadProdLine" resultType="co.carboni.prj.produce.vo.ProcMoniterVO">
+				SELECT d.pcnum, d.pcdnum, c.picodeid, c.piname, c.sinum, m.phdstime, m.phdetime, d.pcdam, d.lineid
+				FROM procinfo c, proccomm_d d, dummy m
+				WHERE c.sinum = m.sinum(+)
+				AND c.picodeid in (SELECT picodeid FROM lineinfo WHERE lineid = #{lineid})
+				AND d.pcnum like #{pcnum}||'%'
+				ORDER BY c.picodeid
+			</select>
+			
+			<!-- 생산지시 상태변경, 자재출고 insert, 자재재고 update -->
+			<update id="updateMat" parameterType="co.carboni.prj.produce.vo.ProcMoniterVO" statementType="CALLABLE">
+				<![CDATA[{call update_mat(#{pcnum})}]]>
+			</update>
+			
+			<!-- 더미테이블 지시번호, 설비번호 등록 -->
+			<insert id="insertSinum" parameterType="co.carboni.prj.produce.vo.ProcMoniterVO">
+				insert into dummy
+				values (#{pcnum}, #{sinum}, null, null, 'N', #{linenum})
+			</insert>
+			
+			<!-- 더미테이블 시작시간, 종료시간 확인 -->
+			<select id="loadTime" resultType="co.carboni.prj.produce.vo.ProcMoniterVO">
+				SELECT phdstime, phdetime
+				FROM dummy
+				WHERE pcnum = #{pcnum} and sinum = #{sinum}
+			</select>
+			
+			<!-- 생산완료되면 수주상태, 제품영업재고 update -->
+			<update id="updateConStk" parameterType="co.carboni.prj.produce.vo.ProcMoniterVO" statementType="CALLABLE">
+				<![CDATA[{call update_constk(#{pcdnum}, #{phmkam})}]]>
+			</update>
+			
+		
+			<!-- 생산완료되면 공정진행에 insert -->
+			<insert id="insertProcHead" parameterType="co.carboni.prj.produce.vo.ProcMoniterVO" useGeneratedKeys="true" keyColumn="phnum" keyProperty="phnum">
+				INSERT INTO prochead
+				VALUES (('PH-'||prochead_PHNUM_seq.nextval), #{pcdnum}, to_date(sysdate, 'yyyy-MM-dd'), #{phmkam}, #{pherram})
+				<selectKey resultType="string" keyProperty="phnum" order="AFTER">
+					SELECT 'PH-'||max(TO_NUMBER(SUBSTR(phnum, 4))) AS phnum FROM prochead
+				</selectKey>
+			</insert>
+			
+			<!-- 생산완료되면 공정진행상세에 insert -->
+			<update id="insertProcHeadD" parameterType="co.carboni.prj.produce.vo.ProcMoniterVO" statementType="CALLABLE">
+				<![CDATA[{call add_prochead_d(#{phdnum}, #{phnum}, #{sinum}, #{phdstime}, #{phdetime}, #{phdmkam}, #{phderram}, #{phdstat}, #{pcnum}, #{picodeid})}]]>
+			</update>
+			
+			<!-- 스케줄링 -->
+			<update id="schedule">
+				<![CDATA[{call schedule(#{param1}, #{param2})}]]>
+			</update>
+			
+			<!-- 긴급중지 -->
+			<update id="emerStop">
+				update dummy
+				set sstatus = 'Y'
+				where linenum >= 
+				(select max(linenum) keep(dense_rank first order by linenum) from dummy where sstatus = 'N')
+			</update>
+			<!-- 긴급중지한 설비번호 찾아오기 -->
+			<select id="selectEmer" resultType="co.carboni.prj.produce.vo.ProcMoniterVO">
+				select sinum from dummy
+				where phdstime is null or phdetime is null
+				order by linenum
+			</select>
+			
+			<!-- 재시작 -->
+			<update id="restart">
+				update dummy
+				set sstatus = 'N'
+				where linenum >=
+				(select max(linenum) keep(dense_rank first order by linenum) from dummy
+				where sstatus = 'Y')
+				and (phdstime is null or phdetime is null)
+			</update>
+			
+			
+		<!-- 실적모니터링 -->
+			<!-- 생산실적 클릭시 공정별 생산내역 확인 -->
+			<select id="searchHead" resultType="co.carboni.prj.produce.vo.ProcMoniterVO">
+				SELECT c.pcnum, i.piname, d.sinum, d.phdstime, d.phdetime, d.phdmkam, d.phderram, d.phnum, d.phdnum, m.pcdam
+				FROM prochead_d d, prochead h, proccomm_d m, prodcomm c, procinfo i
+				WHERE d.phnum = h.phnum
+				AND h.pcdnum = m.pcdnum
+				AND m.pcnum = c.pcnum
+				AND d.picodeid = i.picodeid(+)
+				AND d.phnum = #{phnum}
+				ORDER BY d.phnum desc
+			</select>
+			
+			<!-- 라인번호 클릭시 최근 1주일 생산실적 --> 
+			<select id="lineProd" resultType="co.carboni.prj.produce.vo.ProcMoniterVO">
+				select c.pcnum, c.pcname, h.phdate, g.giname, d.gicode, d.lineid, h.phmkam, h.pherram, c.pcdkeeper, h.phnum, d.pcdam
+				from prochead h, prodcomm c, proccomm_d d, goodsinfo g
+				where (h.pcdnum = d.pcdnum and d.pcnum = c.pcnum and d.gicode = g.gicode)
+				and d.lineid = #{lineid}
+				and h.phdate >= to_date(sysdate-7, 'yyyy-MM-dd')
+			</select>
+			
+			<!-- 생산일자로 생산실적 검색 -->
+			<select id="lineProdDt" resultType="co.carboni.prj.produce.vo.ProcMoniterVO">
+				select c.pcnum, c.pcname, h.phdate, g.giname, d.gicode, d.lineid, h.phmkam, h.pherram, c.pcdkeeper, h.phnum, d.pcdam
+				from prochead h, prodcomm c, proccomm_d d, goodsinfo g
+				where (h.pcdnum = d.pcdnum and d.pcnum = c.pcnum and d.gicode = g.gicode)
+				and (h.phdate BETWEEN to_date(#{prodDtS}, 'yyyy-MM-dd') AND to_date(#{prodDtE}, 'yyyy-MM-dd'))
+				<if test="lineid != ''">and d.lineid = #{lineid}</if>
+			</select>
+			
+			<!-- 불량내역 등록 -->
+			<insert id="errorInsert" parameterType="co.carboni.prj.produce.vo.ProcMoniterVO">
+				INSERT INTO goods_err
+				VALUES ('GE-'||goods_err_genum_seq.nextval, #{phnum}, #{ccodeid}, #{gedate}, #{gedetail}, #{gicode}, #{gegdam}, 'N')
+			</insert>
+			
+			
+		<!-- 불량내역조회 -->
+			
+			<!-- 불량내역 엑셀 -->
+			<select id="errorExcel" resultType="map">
+				SELECT g.genum as "불량내역번호", g.phnum as "작업번호", f.giname as "제품명", c.ccodeid as "불량코드", c.cexplaind as "불량명", g.gedetail as "불량내역", g.gegdam as "불량량", to_char(g.gedate) as "불량일자"
+	        FROM goods_err g, common c, goodsinfo f
+	        WHERE (g.ccodeid = c.ccodeid AND f.gicode = g.gicode)
+			</select>
+			
+</mapper>

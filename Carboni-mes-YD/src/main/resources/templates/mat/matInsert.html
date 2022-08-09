@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout}"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<script>
+	
+</script>
+
+
+<style>
+#modal {
+	display: none;
+}
+.nameing {
+	float: right;
+	font-size: medium;
+	font-weight: normal;
+	margin-top: 15px;
+}
+
+ul {
+	list-style: none;
+}
+
+.subtitle {
+	text-decoration: none;
+	font-size: 20px;
+	margin: 2px 0px 2px;
+	width: 400px;
+}
+
+.grid-option-area {
+	display: flex;
+	text-align: justify;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+.tui-datepicker {
+	z-index: 99;
+}
+
+.ht {
+	height: 28px;
+}
+
+.title {
+	text-align: center;
+	margin-bottom: 10px;
+	margin-top: -10px;
+}
+
+.input {
+	margin-left: 15px;
+	display: inline-block;
+	vertical-align: middle;
+	border: 1px solid #dddddd;
+	width: 20%;
+	color: rgb(94, 94, 94);
+	border-radius: 5px;
+	text-align: center;
+	display: inline-block;
+}
+.tui-grid-cell.rowSelect {
+	background-color: #ffffff;
+}
+</style>
+
+</head>
+<body class="sb-nav-fixed">
+	<th:block layout:fragment="main">
+		<div class="container-fluid px-4">
+		<div class="nameing">
+					<a href="/" style="text-decoration-line: none; color: black"><i class="bi bi-house-door-fill"></i></a> > 자재관리 > <b>입고관리</b>
+				</div>
+			<h1 class="mt-4">입고관리
+			
+			</h1>
+			
+			<div class="card mb-2">
+				<div class="card-header">
+					<div style="display: flex; justify-content: flex-end;">
+						<button type="button" id="resetBtn" class="btn btn-secondary"
+							style="margin-right: 5px;">새자료</button>
+							<button type="button" id="exelBtn" class="btn btn-secondary"
+							style="margin-right: 5px;">엑셀</button>
+						<button type="button" id="researchBtn" class="btn btn-secondary"
+							style="margin-right: 5px;">조회</button>
+						<button type="button" id="saveBtn" class="btn btn-secondary"
+							style="margin-right: 5px;" sec:authorize="hasRole('ROLE_a')">저장</button>
+						<button type="button" id="removeBtn" class="btn btn-secondary"
+							style="margin-right: 5px;" sec:authorize="hasRole('ROLE_a')">삭제</button>
+
+					</div>
+				</div>
+			</div>
+
+			<!-- 버튼 끝  -->
+			<div class="card mb-2">
+				<div class="card-body">
+					<!-- 검색폼  -->
+					<form autocomplete="off" id="dataForm">
+						<div class="container-fluid"
+							style="display: flex; flex-flow: row wrap; justify-content: space-between;">
+							<!-- 입고일자 입고업체 업체명 특기사항   -->
+							<div class="item ">
+								<table class="table table-bbs">
+									<tbody>
+										<!-- 일자겁색 -->
+										<tr>
+											<th style="width: 25%;"><label>입고일자</label></th>
+											<td colspan='3'>
+												<div class="mt-1">
+													<div
+														class="tui-datepicker-input tui-datetime-input tui-has-focus">
+														<input type="text" id="startpicker-input"
+															class="form-control" aria-label="Date-Time" tabindex="1">
+														<span class="tui-ico-date "></span>
+														<div id="startpicker-container" style="margin-left: -1px;"></div>
+													</div>
+
+													<span class="mg5">~</span>
+													<div
+														class="tui-datepicker-input tui-datetime-input tui-has-focus">
+														<input type="text" id="endpicker-input"
+															class="form-control" aria-label="Date-Time" tabindex="1">
+														<span class="tui-ico-date "></span>
+														<div id="endpicker-container" style="margin-left: -1px;"></div>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<!-- 입고업체  -->
+										<tr>
+											<th style="width: 25%;"><label>입고업체</label></th>
+											<td style="width: 200px;"><input type="text"
+												id="searchBtn" style="width: 200px;" class="form-control ht"
+												tabindex="2" placeholder="입고처명 검색"></td>
+											<th style="width: 25%;"><label>업체코드</label></th>
+											<td style="width: 200px;"><input type="text"
+												class="form-control ht" id="rightcom" readonly
+												style="width: 200px;"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+							<!-- 발주일자 조회  -->
+							<div class="item col-5 border"
+								style="width: 600px; height: 100px; margin: 10px;">
+								<div class="grid-option-area mt-1">
+									<ul>
+										<li>
+											<h3 class="subtitle"
+												style="margin: 15px 0px 2px; width: 400px; font-size: 16px; font-weight: bold;">
+												발주조회</h3>
+										</li>
+										<li class="mt-1 grid-option-area"
+											style="margin: 10px; padding: 5px 0px 0px 5px;">
+											<div>
+												<label class="mg5">발주일자</label>
+												<!--검색 시작일 -->
+												<div
+													class="tui-datepicker-input tui-datetime-input tui-has-focus mg5">
+													<input id="orderSdate" type="text" class="form-control"
+														aria-label="Date"> <span class="tui-ico-date"></span>
+													<div id="orderSdate-wapper" style="margin-left: -1px;"></div>
+												</div>
+
+												<span class="mg5">~</span>
+
+												<div
+													class="tui-datepicker-input tui-datetime-input tui-has-focus mg5">
+													<input id="orderEdate" type="text" class="form-control"
+														aria-label="Date"> <span class="tui-ico-date"></span>
+													<div id="orderEdate-wapper" style="margin-left: -1px;"></div>
+												</div>
+												<button type="button" class="btn btn-secondary btn-block"
+													id="btnModal">검색</button>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div id="grid" class="container-fluid px-4"></div>
+
+		<div id="modal">
+
+			<div id="inmodal" title="발주내용">
+				<div id="ingrid"></div>
+			</div>
+
+			<div id="searchmodal" style="padding: 20px;" title="입고업체검색">
+				<div class="title">
+					<span>거래처명</span><input type="text" class="input" id="inputComList">
+					<button class="btn btn-secondary" id="inpputComBtn">검색</button>
+				</div>
+				<div id="goupgrid"></div>
+			</div>
+		</div>
+
+		<!-- 그리드 내용  -->
+		<script>
+			$(function() {
+				/*메이크 모달*/
+				function makeModal(e, fnc) {
+					var dialog = $(e).dialog({
+						autoOpen : false,
+						height : 600,
+						width : 700,
+						modal : true,
+						buttons : {
+							'확인' : fnc,
+							'취소' : function() {
+								$(this).dialog('close')
+							}
+						}
+					});
+					$('.ui-dialog-titlebar-close').html('X').css('border',
+							'none')
+					$('.ui-dialog-buttonset').children().attr('class',
+							'btn btn-secondary')
+					return dialog;
+				}
+				/*메이크모달 끝*/
+				
+				/* 입고일자 데이트 피커  */
+				var today = new Date();
+				var picker1 = tui.DatePicker.createRangePicker({
+					startpicker : {
+						date : today,
+						input : '#startpicker-input',
+						container : '#startpicker-container'
+					},
+					endpicker : {
+						date : new Date(today.getFullYear(),today.getMonth(),today.getDate()+1),
+						input : '#endpicker-input',
+						container : '#endpicker-container'
+					}
+				});
+
+				/* 발주일자 데이트 피커  */
+				var picker2 = tui.DatePicker.createRangePicker({
+					startpicker : {
+						date : today,
+						input : '#orderSdate',
+						container : '#orderSdate-wapper'
+					},
+					endpicker : {
+						date : new Date(today.getFullYear(),today.getMonth(),today.getDate()+1),
+						input : '#orderEdate',
+						container : '#orderEdate-wapper'
+					}
+				});
+ 				/* ===============그리드============================ */
+				const gridData = [];
+
+				const grid = new tui.Grid({
+					el : document.getElementById('grid'),
+					data : gridData,
+					scrollX : false,
+					bodyHeight : 500,
+					rowHeaders : [ 'checkbox' ],
+					columns : [ {
+						header : '입고일자',
+						align : 'center',
+						name :'msindate',
+						editor: 'datePicker'
+					}, {
+						header : '입출고번호',
+						name :'msnum',
+						align : 'center'
+					}, {
+						header : '입고업체',
+						name :'csname',
+						align : 'center'
+					}, {
+						header : '자재코드',
+						name :'micode',
+						sortingType : 'desc',
+						align : 'center',
+						sortable : true
+					}, {
+						header : '자재명',
+						name :'miname',
+						align : 'center'
+					}, {
+						header : '규격',
+						name :'mistand',
+						align : 'center'
+					}, {
+						header : '자재단위',
+						name :'miunit',
+						align : 'center'
+					}, {
+						header : '발주번호',
+						name :'monum',
+						align : 'center'
+					},{
+						header : '발주일자',
+						name :'moodate',
+						align : 'center'
+					}, {
+						header : '발주량',
+						name :'moaskam',
+						align : 'center'
+					},  {
+						header : '입고량',
+						name :'msinam',
+						align : 'center'
+					}, {
+						header : '자재 LOT.NO',
+						name :'mlnum',
+						align : 'center'
+					}, {
+						header : '특이사항',
+						name :'msnote',
+						align : 'center',
+						editor :'text'
+					} ]
+				});
+				grid.hideColumn('micode')
+				grid.hideColumn('mlnum')
+				
+				
+				/*발주일자 검색 그리드 */
+				const indata = [];
+				let inmod = new tui.Grid({
+					el : document.getElementById('ingrid'),
+					data : indata,
+					scrollX : false,
+					rowHeaders : [ 'checkbox' ],
+					bodyHeight : 430,
+					columns : [ {
+						header : '발주코드',
+						align : 'center',
+						name :'monum',
+						sortingType : 'desc',
+						sortable : true
+					}, {
+						header : '발주일자',
+						name : 'moodate',
+						align : 'center',
+					}, {
+						header : '자재코드',
+						name : 'micode',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					}, {
+						header : '자재명',
+						name : 'miname',
+						align : 'center',
+					}, {
+						header : '거래처코드',
+						name : 'cscode',
+						align : 'center',
+					}, {
+						header : '거래처명',
+						name : 'csname',
+						align : 'center',
+					} ]
+
+				});
+				inmod.hideColumn('micode')
+				inmod.hideColumn('cscode')
+				
+				/*입고처명 그리드*/
+				const giupdata = [];
+
+				let giupgir = new tui.Grid({
+					el : document.getElementById('goupgrid'),
+					data : giupdata,
+					scrollX : false,
+					bodyHeight : 430,
+					columns : [ {
+						header : '거래처코드',
+						name : 'cscode',
+						align : 'center',
+					}, {
+						header : '거래처명',
+						name : 'csname',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					}, {
+						header : '사업자등록번호',
+						name : 'csnum',
+						align : 'center',
+					}, {
+						header : '전화번호',
+						name : 'cstel',
+						align : 'center',
+					} ]
+				});
+				/*================그리드 끝===============================*/
+				/*발주일자 조회해서 메인그리드에 출력=============================*/
+				/*발주일자 검색 모달 안의 내용이 나와야함  R*/
+				var inmo = makeModal("#inmodal", inupdate)
+				
+				$("#btnModal").on('click', function() {
+					$("#inmodal").css('display', '')
+					inmo.dialog('open')
+					var startD =$("#orderSdate").val();
+					var endD = $("#orderEdate").val();
+					$.ajax({
+						url : 'insearchorder',
+						method:'POST',
+						data : {startD,endD},
+						dataType: 'json',
+						success : function(result){
+							inmod.refreshLayout();
+							inmod.resetData(result)
+						}
+					})
+				})
+				//발주내역 모달 안의 체크값 하이라이트
+				inmod.on('check',(ev)=>{
+					inmod.addRowClassName(ev.rowKey, 'rowSelect')
+				})
+				inmod.on('uncheck',(ev)=>{
+					inmod.removeRowClassName(ev.rowKey, 'rowSelect')
+				})
+				
+				/*발주일자 성공했을때 메인 그리드에 나올내용업데이트*/
+				function inupdate() {
+					baljo=inmod.getCheckedRows();
+					grid.appendRows(baljo)
+						prl =(grid.getRowCount())-1
+						for(i=0; i<prl+1; i++){
+							grid.setValue(i,'msinam',grid.getRow(i).moaskam,false)
+						}
+					inmo.dialog('close')
+				}
+				/*발주조회=====================================*/
+				
+				/*입고처명 모달*/
+				var log = makeModal("#searchmodal", giupcheck)
+
+				/* 입고처명 모달 R*/
+				$("#searchBtn").on("click", function() {
+					$("#searchmodal").css('display', '')
+					log.dialog('open')
+					$.ajax({
+						url : 'companyList',
+						method : 'POST',
+						dataType : 'json',
+						success : function(result) {
+							giupgir.refreshLayout();
+							giupgir.resetData(result)
+							giupgir.on('click',e=>{
+								var rk = e.rowKey
+								for(i=0; i<giupgir.getRowCount(); i++) {
+									giupgir.removeRowClassName(i, 'rowSelect')
+									}
+								giupgir.addRowClassName(rk, 'rowSelect')
+								cs = giupgir.getRow(rk).csname
+								csco =giupgir.getRow(rk).cscode
+							})
+						}
+					})
+				})
+				/*모달박스안의 검색 눌렀을때 R*/
+				$("#inpputComBtn").on('click',function(){
+					var csname= $("#inputComList").val()
+						$.ajax({
+							url:'findSearchCom',
+							method: 'POST',
+							data :{csname},
+							dataType:'json',
+							success :function(result){
+								giupgir.resetData(result)
+								giupgir.on('click',e=>{
+									var rk = e.rowKey
+									for(i=0; i<giupgir.getRowCount(); i++) {
+										giupgir.removeRowClassName(i, 'rowSelect')
+										}
+									giupgir.addRowClassName(rk, 'rowSelect')
+									cs = giupgir.getRow(rk).csname
+									csco =giupgir.getRow(rk).cscode
+								})
+							}
+						})
+				})
+				/*기업모달에서 확인 눌렀을떄 */
+				function giupcheck() {
+					$("#searchBtn").val(cs)
+					$('#rightcom').val(csco)
+					log.dialog('close')
+				}
+				/*입고처명 모달 끝*/
+				
+				/*--------------------------------------------------*/
+				/*새자료 눌렀을때 리셋 */
+					$('#resetBtn').on('click', function(){
+						fnFormClear();
+					})
+						function fnFormClear() {
+							document.getElementById('dataForm').reset();
+							picker1.setStartDate(new Date());
+							picker1.setEndDate(new Date());
+							picker2.setStartDate(new Date());
+							picker2.setEndDate(new Date());
+							grid.resetData(gridData);
+						}
+				/*--------------------------------------------*/
+				
+				/*저장버튼 눌렀을때 C*/
+				$('#saveBtn').on('click',function(){
+					var detalists =grid.getCheckedRows()
+					console.log(detalists)
+					var checkNum = detalists.some(e=>{return e.msnum != null})
+					//입고번호가 있으면 true
+					var checkDate = detalists.some(e=>{return e.msindate ==null})
+					//입고일자가 비었으면 true
+					var subdate =detalists.some(e=> {return (new Date(e.msindate)-new Date(e.moodate)) > 0})
+					//입고일자에서 발주일자를 뻇을때 양수여야만 true
+					if(detalists==''){
+						swal('실패','저장할 행을 선택하세요','error')
+					}else{
+						//입고일자가 비었으면 경고창 
+						if(checkDate == true){
+							//그리드에 값이 없으면 swal안뜨게
+							swal('','입력하지않은 값이 있습니다', 'warning')
+							return;
+						} else {
+							//입고번호가 없다면 
+							if(checkNum == false){
+								if(detalists.length ==0){
+									return;
+								}
+								if(subdate == true){
+									/*입고 아작스!*/
+									$.ajax({
+										url: 'addinputlist',
+										method : 'POST',
+										data: JSON.stringify(detalists),
+										contentType:'application/json',
+										success :function(result){
+											grid.removeCheckedRows('')
+											grid.appendRows(result)
+											swal('성공', '입고입력이 완료되었습니다.', 'success')
+										}
+									})
+								}else {
+									swal('','입고일자를 다시 입력하세요', 'warning')
+									return;
+								}
+							}else{
+								swal('','이미 등록된 값이 있습니다.', 'warning')
+								return;
+							}
+						}
+					}
+					
+				})
+				
+				/*-------------R---------------발주일자로 조회------------------------------------------*/
+				$('#researchBtn').on('click',function(){
+					var startD = $('#startpicker-input').val()
+					var endD =$('#endpicker-input').val()
+					var cusCode = $('#rightcom').val()
+					$.ajax({
+							url: 'findindate',
+							method: 'POST',
+							data : {startD,endD,cusCode},
+							success : function(result){
+								grid.refreshLayout();
+								grid.resetData(result)
+							}
+						})
+				})
+					/*=---D------삭제 하면서 상태 업데이트 ------------*/
+						/*삭제눌렀을때*/
+						$('#removeBtn').on('click', function(){
+							delgrid =grid.getCheckedRows()
+							var dellists = delgrid.map((e) => {
+								return {msnum:e.msnum,monum:e.monum}})
+							console.log(dellists)
+							/*삭제 아작스*/
+							$.ajax({
+									url :'inputdelreq',
+									method :'POST',
+									data:JSON.stringify(dellists),
+									contentType: 'application/json',
+									success :function(){
+										if(delgrid==''){
+											swal('실패','삭제할 행을 선택하세요','error')
+										}else{
+											grid.removeCheckedRows('') 
+											swal("삭제 완료", "선택한 입고내역이 삭제되었습니다.", "success");
+										}
+										
+									}
+							}) 
+						})
+						
+						$('#exelBtn').on('click',function(){
+							location.href="insertexel"
+						})
+						
+						//메인그리드 체크 하이라이트
+	                grid.on('check',(ev)=>{
+	                	grid.addRowClassName(ev.rowKey, 'rowSelect')
+	                })
+	                grid.on('uncheck',(ev)=>{
+	                	grid.removeRowClassName(ev.rowKey, 'rowSelect')
+	                })
+			})
+		</script>
+	</th:block>
+</body>
+</html>

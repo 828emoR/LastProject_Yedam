@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.carboni.prj.sales.mapper.SalesMapper">
+	
+	<!-- 생산관리 -->
+		<!-- 불량내역조회 -->
+		<select id="findProdErrList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			 select g.genum, g.phnum, f.giname, c.cexplaind, g.gedetail, g.gedate, g.ccodeid
+			FROM goods_err g, common c, goodsinfo f
+			WHERE (g.ccodeid = c.ccodeid and g.gicode = f.gicode)
+	         AND (g.gedate BETWEEN to_date(#{startDtS}, 'yyyy-MM-dd') AND to_date(#{endDtE}, 'yyyy-MM-dd'))
+	         <if test="errOpList != ''">AND c.ccodeid = #{errOpList}</if>      
+		</select>
+		
+	
+	<!-- 수주관리 -->
+	
+		
+		<!-- 수주목록 삭제 -->
+		<delete id="findDelCnList" parameterType="co.carboni.prj.sales.vo.SalesVO">
+			DELETE FROM contract
+			WHERE cnnum in
+			<foreach collection="cnList" item="arr" open="(" separator="," close=")" >
+				#{arr}
+			</foreach>
+		</delete>
+		
+		<!-- 수주관리 수주일자 조회 -->
+		<select id="findCndateList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT m.cnnum, c.csname, g.giname, m.cnam, m.cnrest, m.cndate, m.cnperiod, m.cnstatus, g.giunit
+			FROM contract m, costomer c, goodsinfo g
+			WHERE (c.cscode = m.cscode AND g.gicode = m.gicode)
+			<if test="startDt != ''">
+			AND
+			(m.cndate BETWEEN to_date(#{startDt}, 'yyyy-MM-dd') AND to_date(#{endDt}, 'yyyy-MM-dd'))
+			</if>
+			<if test="cusCode != ''">
+			AND
+			m.cscode = #{cusCode}
+			</if>
+			<if test="goodsCode != ''">
+			AND
+			m.gicode =#{goodsCode}
+			</if>
+			<if test="cnCode != ''">
+			AND
+			m.cnnum = #{cnCode}
+			</if>
+		</select>
+		
+		<!-- 거래처모달 전체조회 -->
+		<select id="findAllCsList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT cscode, csname, csnum, cstel FROM costomer
+			WHERE csgb = '제품거래'
+		</select>
+	
+		<!-- 거래처모달 검색조회 -->
+		<select id="findCsList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT cscode, csname, csnum, cstel FROM costomer
+			WHERE csname like '%' || #{csname} || '%'
+			AND csgb = '제품거래'
+		</select>
+		
+		<!-- 제품모달 전체조회 -->
+		<select id="findAllGiList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT gicode, giname, giunit FROM goodsinfo
+		</select>
+		
+		<!-- 제품모달 검색조회 -->
+		<select id="findGiList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT gicode, giname, giunit FROM goodsinfo
+			WHERE giname like '%' || #{giname} || '%'
+		</select>
+		
+	
+	<!-- 생산의뢰관리 -->
+	
+		<!-- 생산의뢰 등록 -->
+		<insert id="prodReqInsert" parameterType="co.carboni.prj.sales.vo.SalesVO" useGeneratedKeys="true" keyColumn="prnum" keyProperty="prnum">
+			INSERT INTO prodreq
+			VALUES (('PR-'||TO_CHAR(prodreq_PRNUM_seq.nextval)), #{prclose}, 'N', #{cnnum})
+			<selectKey resultType="string" keyProperty="prnum" order="AFTER">
+				SELECT 'PR-'||max(TO_NUMBER(SUBSTR(prnum, 4))) AS prnum FROM prodreq
+			</selectKey>
+		</insert>
+		
+		<!-- 생산의뢰등록 -> 수정(수주관리에 진행상태 변경) -->
+		<update id="updateCnStat" parameterType="co.carboni.prj.sales.vo.SalesVO">
+			UPDATE contract
+			SET cnstatus = '생산중'
+			WHERE cnnum = (SELECT cnnum FROM prodreq WHERE prnum =#{prnum})
+		</update>
+		
+		
+		
+	
+		<!-- 생산의뢰 조회 -->
+		<select id="findPrcloseList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT p.prnum, p.cnnum, g.giname, r.csname, c.cndate, c.cnperiod, p.prclose, p.prstatus, c.cnam
+			FROM contract c, prodreq p, costomer r, goodsinfo g
+			WHERE (c.cnnum = p.cnnum AND c.gicode = g.gicode AND c.cscode = r.cscode)
+			<if test="startCd != ''">
+			AND
+			(c.cndate BETWEEN to_date(#{startCd}, 'yyyy-MM-dd') AND to_date(#{endCd}, 'yyyy-MM-dd'))
+			</if>
+			<if test="startPr != ''">
+			AND
+			(p.prclose BETWEEN to_date(#{startPr}, 'yyyy-MM-dd') AND to_date(#{endPr}, 'yyyy-MM-dd'))
+			</if>
+			<if test="complete != ''">
+			AND
+			p.prstatus = #{complete}
+			</if>
+			<if test="gsCode != ''">
+			AND
+			c.gicode = #{gsCode}
+			</if>
+		</select>
+		
+		<!-- 생산의뢰목록 삭제 -->
+		<delete id="findDelPrList" parameterType="co.carboni.prj.sales.vo.SalesVO">
+			DELETE FROM prodreq
+			WHERE prnum in
+			<foreach collection="prList" item="arr" open="(" separator="," close=")">
+				#{arr}
+			</foreach>
+		</delete>
+		
+		<!-- 생산의뢰관리 수주일자 조회 -->
+      	<select id="findPcndateList" resultType="co.carboni.prj.sales.vo.SalesVO">
+	         SELECT c.cnnum, g.giname, m.csname, c.cndate, c.cnperiod
+	         FROM contract c, goodsinfo g, costomer m
+	         WHERE (c.gicode = g.gicode and c.cscode = m.cscode)
+	         AND (c.cndate BETWEEN to_date(#{startDt}, 'yyyy-MM-dd') AND to_date(#{endDt}, 'yyyy-MM-dd')) 
+	         AND c.cnstatus = '생산전' 
+		</select>
+		
+	
+	<!-- 출하관리 -->
+	
+		<!-- 출하등록 -->
+		<update id="shipInsert" parameterType="co.carboni.prj.sales.vo.SalesVO" statementType="CALLABLE">
+            <![CDATA[{call shippro(#{cnnum}, #{sham}, #{shdate}, #{gsmnum}, #{check1, mode=OUT, jdbcType=VARCHAR}, #{check2, mode=OUT, jdbcType=VARCHAR}, #{check3, mode=OUT, jdbcType=VARCHAR})}]]>
+		</update>
+		
+		<!-- 출하목록 삭제 -->
+		<delete id="findDelShList" parameterType="co.carboni.prj.sales.vo.SalesVO">
+			DELETE FROM ship
+			WHERE shnum in
+			<foreach collection="shList" item="arr" open="(" separator="," close=")">
+				#{arr}
+			</foreach>
+		</delete>
+		
+		<!-- 출하관리 출하등록 수주일자 조회 -->
+		<select id="findScndateList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT c.cnnum, g.giname, r.csname, c.cnperiod, c.cndate, c.cnstatus, k.gsmnum
+			FROM contract c, costomer r, goodsinfo g, goodsstk k
+			WHERE (c.gicode = g.gicode AND c.cscode = r.cscode AND c.gicode = k.gicode)
+			AND
+			(c.cndate BETWEEN to_date(#{startScd}, 'yyyy-MM-dd') AND to_date(#{endScd}, 'yyyy-MM-dd'))
+            AND
+            c.cnstatus = '납품전'
+		</select>
+		
+		<!-- 출하목록 조회 -->
+		<select id="findShipList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT s.shnum, c.cnnum, g.giname, r.csname, c.cnam, s.sham, s.shdate, c.cnperiod, s.shstatus
+			FROM contract c, ship s, costomer r, goodsinfo g
+			WHERE (c.cnnum = s.cnnum AND c.gicode = g.gicode AND c.cscode = r.cscode)
+			<if test="startCp != ''">
+			AND
+			(c.cnperiod BETWEEN to_date(#{startCp}, 'yyyy-MM-dd') AND to_date(#{endCp}, 'yyyy-MM-dd'))
+			</if>
+			<if test="startSd != ''">
+			AND
+			(s.shdate BETWEEN to_date(#{startSd}, 'yyyy-MM-dd') AND to_date(#{endSd}, 'yyyy-MM-dd'))
+			</if>
+			<if test="gsCode != ''">
+			AND
+			c.gicode = #{gsCode}
+			</if>
+		</select>
+		
+		<!-- 출하관리 미출고건 납기일자 조회 -->
+		<select id="findNoProdList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT c.cnnum, g.giname, r.csname, c.cnperiod, c.cnam, c.cnrest
+			FROM contract c, costomer r, goodsinfo g
+			WHERE (c.gicode = g.gicode AND c.cscode = r.cscode)
+			AND
+			(c.cnperiod BETWEEN to_date(#{startCpd}, 'yyyy-MM-dd') AND to_date(#{endCpd}, 'yyyy-MM-dd'))
+			AND
+			c.cnrest > 0
+
+		</select>
+		
+	
+		
+	<!-- 제품재고관리 -->
+		
+		<!-- 제품재고 조회 -->
+		<select id="findStkList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT s.gsmnum, s.gsam, s.gicode, i.giname, i.giunit, i.gisafe, sum(c.cnrest) AS cnrest
+			FROM goodsinfo i, goodsstk s, contract c
+			WHERE (i.gicode = s.gicode AND s.gicode = c.gicode)
+			AND (s.gicode = #{gssCode} AND c.cnstatus NOT IN ('납품완료'))
+			GROUP BY s.gsmnum, s.gsam, s.gicode, i.giname, i.giunit, i.gisafe
+			ORDER BY s.gsmnum
+		</select>
+		
+		<!-- 제품재고 삭제 -->
+		<delete id="findDelGsmList" parameterType="co.carboni.prj.sales.vo.SalesVO">
+			DELETE FROM goodsstk
+			WHERE gsmnum in
+			<foreach collection="gsmList" item="arr" open="(" separator="," close=")">
+				#{arr}
+			</foreach>
+		</delete>
+		
+		<!-- 제품재고등록 검색조회 -->
+		<select id="findStkProdList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT g.giname, g.gicode
+			FROM goodsinfo g
+			WHERE NOT EXISTS (
+                             SELECT s.gsam
+                             FROM goodsstk s
+                             WHERE s.gicode = g.gicode
+                             )
+			AND giname like '%' || #{addStk} || '%'
+		</select>
+		
+		<!-- 제품재고등록 전체조회 -->
+		<select id="findAllStkProdList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT g.giname, g.gicode
+			FROM goodsinfo g
+			WHERE NOT EXISTS (
+                             SELECT s.gsam
+                             FROM goodsstk s
+                             WHERE s.gicode = g.gicode
+                             )
+		</select>
+		
+		<!-- 제품재고 등록 -->
+		 <insert id="goodsStkInsert" parameterType="co.carboni.prj.sales.vo.SalesVO" useGeneratedKeys="true" keyColumn="gsmnum" keyProperty="gsmnum">
+			INSERT INTO goodsstk
+			VALUES (#{jepoomcoin}, #{gsamin}, ('GSM-'||TO_CHAR(goodsstk_GSMNUM_seq.nextval)))
+		</insert> 
+		
+		<!-- 제품재고등록 -> 수정(재고 수량 변경) -->
+		<update id="updateStkStat" parameterType="co.carboni.prj.sales.vo.SalesVO">
+			UPDATE goodsstk
+			SET gsam = #{gsam}
+			WHERE gsmnum = #{gsmnum}
+		</update>
+		
+	<!-- 배송관리 -->
+	
+		<!-- 배송관리 > 수주번호 검색조회 -->
+		<select id="findJepoomList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT c.cnnum, r.csname, g.giname
+			FROM contract c, costomer r, goodsinfo g
+			WHERE (c.gicode = g.gicode AND c.cscode = r.cscode)
+			AND
+			c.cnnum = #{cnList} 
+		</select>
+		
+		<!-- 배송관리 > 수주번호 전체조회 -->
+		<select id="findAllJepoomList" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT c.cnnum, r.csname, g.giname
+			FROM contract c, costomer r, goodsinfo g
+			WHERE (c.gicode = g.gicode AND c.cscode = r.cscode)
+		</select>
+		
+		<!-- 배송관리 배송조회 -->
+		<select id="findDeliverSearch" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT d.dnum, s.cnnum, g.giname, r.csname, s.sham, s.shstatus, s.shdate, s.shnum, c.cnperiod
+			FROM deliver d, contract c, goodsinfo g, costomer r, ship s
+			WHERE (c.gicode = g.gicode AND c.cscode = r.cscode AND c.cnnum = s.cnnum AND s.shnum = d.shnum)
+			<if test="startSh != ''">
+			AND
+			(s.shdate BETWEEN to_date(#{startSh}, 'yyyy-MM-dd') AND to_date(#{endSh}, 'yyyy-MM-dd'))
+			</if>
+			<if test="cnNumber != ''">
+			AND
+            c.cnnum = #{cnNumber}
+            </if>
+		</select>
+		
+		<!-- 배송목록 삭제 -->
+		<delete id="findDelDlist" parameterType="co.carboni.prj.sales.vo.SalesVO">
+			DELETE FROM deliver
+			WHERE dnum in
+			<foreach collection="dList" item="arr" open="(" separator="," close=")">
+				#{arr}
+			</foreach>
+		</delete>
+		
+		<!-- 배송등록 출하일자 전체조회 -->
+		<select id="findAllInShdate" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT s.shnum, g.giname, r.csname, s.shdate, c.cnperiod, s.cnnum
+			FROM contract c, goodsinfo g, costomer r, ship s
+			WHERE (c.gicode = g.gicode AND c.cscode = r.cscode AND s.cnnum = c.cnnum)
+		</select>
+		
+		<!-- 배송등록 출하일자 검색조회 -->
+		<select id="findInShdate" resultType="co.carboni.prj.sales.vo.SalesVO">
+			SELECT s.shnum, g.giname, r.csname, s.shdate, c.cnperiod, s.cnnum
+			FROM contract c, goodsinfo g, costomer r, ship s
+			WHERE (c.gicode = g.gicode AND c.cscode = r.cscode AND s.cnnum = c.cnnum)
+            AND
+            s.cnnum = #{shNumList}
+		</select>
+		
+		<!-- 배송등록 후 상태변경 PLSQL -->
+		<insert id="deliverInsert" parameterType="co.carboni.prj.sales.vo.SalesVO">
+			DECLARE
+			    v_cscode costomer.cscode%TYPE;
+			    v_cnrest contract.cnrest%TYPE;
+			    v_cnnum contract.cnnum%TYPE;
+			    v_sham ship.sham%TYPE;
+			    v_minus number;
+			BEGIN
+			    SELECT cscode INTO v_cscode FROM costomer WHERE csgb = '배송업체';
+			
+			    INSERT INTO deliver VALUES ('D-'||to_char(deliver_DNUM_seq.nextval), #{shnum}, v_cscode);
+			            
+			    UPDATE ship
+			    SET shstatus = 'Y'
+			    WHERE shnum = #{shnum};
+			    
+			    SELECT c.cnrest, c.cnnum, s.sham
+			    INTO v_cnrest, v_cnnum, v_sham
+			    FROM contract c JOIN ship s ON c.cnnum = s.cnnum
+			    WHERE s.shnum = #{shnum};
+			    
+			    v_minus := v_cnrest - v_sham;
+			    
+			    UPDATE contract
+			    SET cnrest = v_minus
+			    WHERE cnnum = v_cnnum;
+			    
+		    IF v_minus = 0 THEN
+		        UPDATE contract
+		        SET cnstatus = '납품완료'
+		        WHERE cnnum = v_cnnum;
+		    END IF;
+			END;
+		</insert>
+		
+	<!-- 엑셀 다운로드 -->
+		
+		<!-- 수주관리 엑셀다운로드 -->
+			<select id="contractInsertExel" resultType="map">
+				SELECT m.cnnum AS "수주번호", c.csname AS "거래처명", g.giname AS "제품명", m.cnam AS "수주수량", m.cnrest AS "수주잔량", TO_CHAR(m.cndate) AS "수주일자", TO_CHAR(m.cnperiod) AS "납기일자", m.cnstatus AS "진행상태" , g.giunit AS "제품단위"
+				FROM contract m, costomer c, goodsinfo g
+				WHERE (c.cscode = m.cscode AND g.gicode = m.gicode)
+			</select>
+			
+			<!-- 생산의뢰관리 엑셀다운로드 -->
+			<select id="prodreqInsertExel" resultType="map">
+				SELECT p.prnum AS "의뢰번호", p.cnnum  AS "수주번호", g.giname  AS "제품명", r.csname  AS "거래처명", TO_CHAR(c.cndate)  AS "수주일자", TO_CHAR(c.cnperiod)  AS "납기일자", TO_CHAR(p.prclose)  AS "마감일자", p.prstatus  AS "생산의뢰여부"
+				FROM contract c, prodreq p, costomer r, goodsinfo g
+				WHERE (c.cnnum = p.cnnum AND c.gicode = g.gicode AND c.cscode = r.cscode)
+			</select>
+			
+			<!-- 출하관리 엑셀다운로드 -->
+			<select id="shipInsertExel" resultType="map">
+				SELECT s.shnum  AS "출하번호", c.cnnum  AS "수주번호", g.giname  AS "제품명", r.csname  AS "거래처명", s.sham  AS "출하수량", TO_CHAR(s.shdate)  AS "출고일자", TO_CHAR(c.cnperiod)  AS "납기일자", s.shstatus  AS "출하진행상태"
+				FROM contract c, ship s, costomer r, goodsinfo g
+				WHERE (c.cnnum = s.cnnum AND c.gicode = g.gicode AND c.cscode = r.cscode)
+			</select>
+			
+			<!-- 제품재고 엑셀다운로드 -->
+			<select id="goodsstkInsertExel" resultType="map">
+				SELECT s.gsmnum  AS "제품재고관리번호", s.gsam  AS "제품재고량", s.gicode  AS "제품코드", i.giname  AS "제품명", i.giunit  AS "제품단위", i.gisafe  AS "안전재고"
+				FROM goodsinfo i, goodsstk s
+				WHERE (i.gicode = s.gicode)
+			</select>
+			
+			<!-- 배송관리 엑셀다운로드 -->
+			<select id="deliverInsertExel" resultType="map">
+				SELECT d.dnum  AS "배송번호", s.cnnum  AS "수주번호", g.giname  AS "제품명", r.csname  AS "거래처명", s.sham  AS "출고수량", TO_CHAR(s.shdate)  AS "출고일자", s.shnum  AS "출하번호", TO_CHAR(c.cnperiod)  AS "납기일자"
+				FROM deliver d, contract c, goodsinfo g, costomer r, ship s
+				WHERE (c.gicode = g.gicode AND c.cscode = r.cscode AND c.cnnum = s.cnnum AND s.shnum = d.shnum)
+			</select>
+			
+	
+		
+		
+</mapper>

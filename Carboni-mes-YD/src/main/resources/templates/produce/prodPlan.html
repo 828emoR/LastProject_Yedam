@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+				xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+				layout:decorate="~{layouts/layout}">
+<head>
+<style>
+.tui-datepicker {
+	z-index: 99;
+}
+
+.grid-option-area {
+	-webkit-box-pack: justify;
+	justify-content: space-between;
+	min-height: 36px;
+	margin-bottom: 10px;
+}
+
+.ht {
+	height: 28px;
+}
+
+.mg5 {
+	margin-top: 5px;
+}
+
+#modal {
+	display: none;
+}
+
+.cb {
+	text-align: center;
+	margin-top: 10px;
+}
+
+.fw {
+	font-weight: 700;
+	margin-right: 10px;
+}
+/* 그리드용 css */
+.tui-grid-cell.matDanger {
+	background-color: #ffe5e5;
+}
+
+.tui-grid-cell.rowSelect {
+	background-color: #ffffff;
+}
+
+.nameing {
+	float: right;
+	font-size: medium;
+	font-weight: normal;
+	margin-top: 15px;
+}
+</style>
+</head>
+<body class="sb-nav-fixed">
+	<th:block layout:fragment="main">
+	<div class="container-fluid px-4">
+		<div class="nameing">
+			<a href="/" style="text-decoration-line: none; color: black"><i class="bi bi-house-door-fill"></i></a> > 생산관리 > 생산계획관리
+		</div>
+		<h1 class="mt-4">생산계획관리</h1>
+		<div class="card mb-2">
+			<div class="card-header">
+				<div style="display: flex; justify-content: flex-end;">
+					<button type="button" id="searchBtn" class="btn btn-secondary"
+						style="margin-right: 5px;">조회</button>
+					<button type="button" id="resetBtn" class="btn btn-secondary"
+						style="margin-right: 5px;">새자료</button>
+					<button type="button" id="saveBtn" class="btn btn-secondary"
+						style="margin-right: 5px;" sec:authorize="hasRole('ROLE_a')">저장</button>
+					<button type="button" id="removeBtn" class="btn btn-secondary"
+						style="margin-right: 5px;" sec:authorize="hasRole('ROLE_a')">삭제</button>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-2">
+				<div class="card-body">
+					<!-- 입력폼 -->
+					<form autocomplete="off" id="dataForm">
+						<input type="hidden" id="planNum" name="planNum"> <input
+							type="hidden" id="planSt" name="planSt">
+						<div class="container-fluid"
+							style="display: flex; flex-flow: row wrap; justify-content: space-between;">
+							<!-- 계획일자, 생산계획명, 특이사항 -->
+							<div class="item col-6">
+								<table class="table table-bbs">
+									<tbody>
+										<tr>
+											<th><label style="width: 100px;">계획일자</label></th>
+											<td colspan="6">
+												<div
+													class="tui-datepicker-input tui-datetime-input tui-has-focus">
+													<input type="text" class="form-control" id="planDt"
+														aria-label="Date-Time" tabindex="1" required> <span
+														class="tui-ico-date"></span>
+												</div>
+												<div id="wrapper" style="margin-top: -1px;"></div>
+											</td>
+										</tr>
+										<tr>
+											<th>생산계획명</th>
+											<td><input type="text" id="planName"
+												class="form-control ht" style="width: 500px;" required></td>
+											<td colspan="5">
+										</tr>
+										<tr>
+											<th>비 고</th>
+											<td><input type="text" id="planNote"
+												class="form-control ht" style="width: 500px;"></td>
+											<td colspan="3">
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+							<!-- 미생산의뢰조회 -->
+							<div class="item col-5 border"
+								style="width: 600px; height: 100px; margin: 10px;">
+								<div class="grid-option-area mt-1">
+									<ul style="list-style: none;">
+										<li>
+											<h3 class="subtitle"
+												style="margin: 15px 0px 2px; width: 400px; font-size: 16px; font-weight: bold;">미생산
+												의뢰 조회</h3>
+										</li>
+										<li class="mt-1 grid-option-area"
+											style="margin: 10px; padding: 5px 0px 0px 5px;">
+											<div>
+												<label for="requestStDt" class="mg5">납기일자</label>
+												<!-- 시작일 -->
+												<div
+													class="tui-datepicker-input tui-datetime-input tui-has-focus mg5">
+													<input id="requestDtS" type="text" class="form-control"
+														aria-label="Date" name="requestDtS"> <span
+														class="tui-ico-date"></span>
+													<div id="requestDtS-wapper" style="margin-left: -1px;"></div>
+												</div>
+
+												<span class="mg5">~</span>
+
+												<!-- 종료일 -->
+												<div
+													class="tui-datepicker-input tui-datetime-input tui-has-focus mg5">
+													<input id="requestDtE" type="text" class="form-control"
+														aria-label="Date" name="requestDtE"> <span
+														class="tui-ico-date"></span>
+													<div id="requestDtE-wapper" style="margin-left: -1px;"></div>
+												</div>
+												<button type="button" class="btn btn-secondary btn-block"
+													id="unprodBtn">읽기</button>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</form>
+					<!-- 입력폼 끝  -->
+				</div>
+			</div>
+		</div>
+
+		<!-- 전체 표 -->
+		<div class="container-fluid px-4 mt-4">
+			<div class="card mb-4">
+				<div class="card-header">
+					<i class="fas fa-table me-1"></i> 생산제품목록
+				</div>
+				<div class="card-body">
+					<div id="total"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 필요자재표  -->
+		<div class="container-fluid px-4">
+			<div class="card mb-4">
+				<div class="card-header">
+					<i class="fas fa-table me-1"></i> 필요자재체크
+				</div>
+				<div class="card-body">
+					<div id="matneed"></div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+
+		<!-- 모달 -->
+		<div id="modal">
+
+			<div id="planModal" style="padding: 20px;" title="생산계획조회">
+				<!-- 생산계획관리 - 생산계획조회 모달 -->
+				<!-- 작성일자 검색 -->
+				<form class="container-fluid" id="searchForm" name="searchForm">
+					<div class="search-area search-area-border" style="width: 100%;">
+						<ul style="list-style: none;">
+							<li><label class="fw">계획일자</label> <!-- 시작일 -->
+								<div
+									class="tui-datepicker-input tui-datetime-input tui-has-focus mg5">
+									<input id="pplanDtS" type="text" class="form-control"
+										aria-label="Date" name="pplanDtS"> <span
+										class="tui-ico-date"></span>
+									<div id="pplanDtS-wapper" style="margin-left: -1px;"></div>
+								</div> <span class="mg5">~</span> <!-- 종료일 -->
+								<div
+									class="tui-datepicker-input tui-datetime-input tui-has-focus mg5">
+									<input id="pplanDtE" type="text" class="form-control"
+										aria-label="Date" name="pplanDtE"> <span
+										class="tui-ico-date"></span>
+									<div id="pplanDtE-wapper" style="margin-left: -1px;"></div>
+								</div>
+								<button type="button" class="ml-1 mw50 btn-sm btn-secondary"
+									id="planBtn">검색</button></li>
+						</ul>
+					</div>
+				</form>
+
+				<!-- 진행상태 구분 -->
+				<div class="container-fluid"
+					style="margin-top: 40px; margin-bottom: 10px;">
+					<div>
+						<label class="fw">진행상태</label> <select id="planStatus"
+							style="width: 100px; height: 28px; display: inline-block;">
+							<option value="미지시">미지시</option>
+							<option value="지시진행">지시진행</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- 그리드 -->
+				<div id="planList"></div>
+			</div>
+
+			<div id="requestModal" style="padding: 20px;" title="미생산의뢰조회">
+				<div id="requestList"></div>
+			</div>
+
+			<div id="matorderModal" style="padding: 20px;" title="자재발주요청">
+				<div class="item col-6">
+					<table class="table table-bbs table-write">
+						<tbody>
+							<tr>
+								<th>자재코드</th>
+								<td><input type="text" id="matCode" class="form-control ht"
+									style="width: 200px;" readonly></td>
+							</tr>
+							<tr>
+								<th>자재명</th>
+								<td><input type="text" id="matName" class="form-control ht"
+									style="width: 200px;" readonly></td>
+							</tr>
+							<tr>
+								<th>발주요청량</th>
+								<td><input type="number" id="orderAmount"
+									class="form-control ht" style="width: 200px;"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+
+
+
+
+
+
+		<!-- 스크립트 -->
+		<script type="text/javascript">
+		
+		$(function(){
+			
+			// 공통 ajax 함수 -------------------------------
+			function makeAjaxCall(url, data, callback, error) {
+				$.ajax({
+					url: url,
+					method: 'POST',
+					data: data,
+					success: callback,
+					error: error
+				})
+			}
+			// --------------------------------------------
+			
+			// 그리드---------------------------------------------
+
+			/* 필요자재 */
+			const selectMat = [];
+
+			const matGrid = new tui.Grid({
+				el : document.getElementById('matneed'),
+				data : selectMat,
+				scrollX : false,
+				rowHeaders : [ 'rowNum' ],
+				columns : [ {
+					header : '제품코드',
+					name : 'gicode',
+					align : 'center'
+				}, {
+					header : '자재코드',
+					name : 'micode',
+					align : 'center'
+				}, {
+					header : '자재명',
+					name : 'miname',
+					align : 'center'
+				}, {
+					header : '소요량(개당)',
+					name : 'bam',
+					align : 'center'
+				}, {
+					header : '필요량',
+					name : 'pamount',
+					align : 'center'
+				}, {
+					header : '재고량',
+					name : 'msciam',
+					align : 'center'
+				}, {
+					header : '부족량',
+					name : 'lamount',
+					align : 'center'
+				} ]
+			});
+
+			/* 전체제품 */
+			const totalPd = [];
+
+			const pdGrid = new tui.Grid({
+				el : document.getElementById('total'),
+				data : totalPd,
+				scrollX : false,
+				columns : [ {
+					header: '제품코드',
+					name: 'gicode',
+					align: 'center',
+					editor: 'text',
+					validation: {
+						required: true
+					}
+				}, {
+					header : '제품명',
+					name: 'giname',
+					align : 'center',
+					editor: 'text',
+					validation: {
+						required: true
+					}
+				}, {
+					header : '규격',
+					name: 'giunit',
+					align : 'center',
+					editor: 'text',
+					validation: {
+						required: true
+					}
+				}, {
+					header : '의뢰번호',
+					name: 'prnum',
+					align : 'center'
+				}, {
+					header : '마감일자',
+					name: 'prclose',
+					align : 'center'
+				}, {
+					header : '수주잔량',
+					name: 'cnrest',
+					align : 'center'
+				}, {
+					header : '기계획량',
+					name: 'ppdam',
+					align : 'center',
+					editor: 'text'
+				}, {
+					header : '미계획량',
+					name : 'uplam',
+					align : 'center',
+					editor: 'text'
+				}, {
+					header : '작업일자',
+					name: 'ppddate',
+					align : 'center',
+					editor : 'datePicker',
+					language : 'ko',
+					validation: {
+						required: true
+					}
+				}, {
+					header : '계획번호',
+					name: 'ppnum',
+					align : 'center'
+				}, {
+					header : '상세계획번호',
+					name: 'ppdnum',
+					align : 'center'
+				} ]
+			});
+			pdGrid.hideColumn('ppnum'); // 생산계획번호 숨기기
+			pdGrid.hideColumn('ppdnum'); // 생산계획상세번호 숨기기
+			
+			/* 미생산의뢰목록 그리드 */
+			const orderList = [];
+				
+			const rqGrid = new tui.Grid({
+			      el: document.getElementById('requestList'),
+			      data: orderList,
+			      columns: [
+			        {
+			          header: '의뢰번호',
+			          name: 'prnum',
+			          align : 'center'
+			        },
+			        {
+			          header: '수주일자',
+			          name: 'cndate',
+			          align : 'center'
+			        },
+			        {
+			          header: '거래처이름',
+			          name: 'csname',
+			          align : 'center'
+			        },
+			        {
+			          header: '마감일자',
+			          name: 'prclose',
+			          align : 'center'
+			        }
+			     ]
+		    });
+			
+			/* 생산계획목록 그리드 */
+			const planList = [];
+				
+			const planGrid = new tui.Grid({
+			     el: document.getElementById('planList'),
+			     data: planList,
+			     columns: [
+			       {
+			         header: '계획일자',
+			         name: 'ppdate',
+			         align : 'center'
+			       },
+			       {
+			         header: '계획번호',
+			         name: 'ppnum',
+			         align : 'center'
+			       },
+			       {
+			         header: '계획명',
+			         name: 'ppname',
+			         align : 'center'
+			       },
+			       {
+			         header: '비고',
+			         name: 'ppnote',
+			         align : 'center'
+			       }
+			     ]
+		    });
+			
+			// 그리드끝------------------------------------------
+			
+			// 모달----------------------------------------
+			var modal1 = makeModal("#planModal", planView)
+			var modal2 = makeModal("#requestModal", requestAdd)
+			var modal3 = makeModal('#matorderModal', requestMat)
+			
+			
+			/* 생산계획조회 모달 */
+			$('#searchBtn').on('click', function(){
+				modal1.dialog('open')
+				planGrid.refreshLayout();
+				$('#planBtn').on('click', function(){
+					var pstartDt = $('#pplanDtS').val() // 계획일자 시작
+					var pendDt = $('#pplanDtE').val() // 계획일자 끝
+					var pstatus = $('#planStatus option:selected').val() // 생산계획 진행상태
+					$.ajax({
+						url: 'searchPlan',
+						method: 'POST',
+						data: { pstartDt, pendDt, pstatus },
+						success: function(result) {
+							planGrid.resetData(result);
+							planGrid.on('click', e => {
+								var rk = e.rowKey;
+								for(i=0; i<planGrid.getRowCount(); i++) {
+									planGrid.removeRowClassName(i, 'rowSelect')
+								}
+								planGrid.addRowClassName(rk, 'rowSelect')
+								findNum = planGrid.getValue(rk, 'ppnum')
+							})
+						
+						}
+					})
+				})
+			})
+			/* 페이지에 생산계획 로드 */
+			function planView() {
+				var promise = $.ajax({
+										url: 'prodPlan',
+										method: 'POST',
+										data: { findNum },
+									});
+				
+				promise.done(loadProdPlan);
+				promise.fail(failFnc);
+				
+				function loadProdPlan(result) {
+					$('#planNum').val(result.ppnum) // hidden에 조회한 계획번호 입력
+					$('#planSt').val(result.ppstatus)
+					$('#planDt').val(result.ppdate)
+					$('#planName').val(result.ppname)
+					$('#planNote').val(result.ppnote)
+					var findDNum = $('#planNum').val();
+					$.ajax({
+						url: 'prodPlanDetail',
+						method: 'POST',
+						data : { findDNum },
+						success: function(list) {
+							pdGrid.refreshLayout();
+							planGrid.resetData(planList);
+							picker.setStartDate(new Date());
+							picker.setEndDate(new Date());
+							pdGrid.resetData(list)
+							modal1.dialog('close')
+						}
+					})
+				}
+				
+				function failFnc(result) {
+					swal('실패', '생산계획 로드에 실패했습니다.', 'error')
+				}
+			}
+
+			
+			/* 미생산의뢰 모달 */
+			$('#unprodBtn').on('click', function(){
+				modal2.dialog('open')
+				rqGrid.refreshLayout();
+				var startDt = $('#requestDtS').val()
+				var endDt = $('#requestDtE').val()
+				makeAjaxCall('unprodList', { startDt, endDt }, function(result){
+					rqGrid.resetData(result);
+					rqGrid.on('click', e => {
+						for(i=0; i<rqGrid.getRowCount(); i++) {
+							rqGrid.removeRowClassName(i, 'rowSelect')
+						}
+						rqGrid.addRowClassName(e.rowKey, 'rowSelect')
+						rqNum = rqGrid.getValue(e.rowKey, 'prnum')
+					})
+				})
+			})
+			/* 미생산의뢰조회 후 생산할 제품 계획에 등록 */
+			function requestAdd() {
+				makeAjaxCall('planProduct', {rqNum}, function(rs){
+					pdGrid.refreshLayout();
+					matGrid.resetData(selectMat); // 계획 추가하면 자재그리드 reset
+					pdGrid.resetData(rs)
+					prk = pdGrid.getRowCount()
+					pdGrid.setValue(0, 'ppdam', pdGrid.getRow(0).cnrest, false)
+				})
+				modal2.dialog('close')
+			}
+			
+			
+			/* 모달틀 */
+			function makeModal(e, fnc) {
+				var dialog = $(e).dialog({
+					autoOpen : false,
+					height : 600,
+					width : 700,
+					modal : true,
+					buttons: {
+						"확인": fnc,
+						"취소": function(){
+							planGrid.resetData(planList);
+							rqGrid.resetData(orderList);
+							picker.setStartDate(new Date());
+							picker.setEndDate(new Date());
+							$(this).dialog('close')
+						}
+					}
+				});
+				$('.ui-dialog-buttonset').children().attr('class', 'btn btn-secondary')
+				$('.ui-dialog-titlebar-close').html('X').css('border', 'none').on('click', function(){ // 타이틀바 x 닫기
+					planGrid.resetData(planList);
+					rqGrid.resetData(orderList);
+					picker.setStartDate(new Date());
+					picker.setEndDate(new Date());
+				})
+				return dialog;
+			}
+		// 모달끝--------------------------------------------
+		
+		
+		// 그리드 함수 --------------------------------------
+		
+			
+			// 자재정보 출력을 위한 제품목록 그리드 클릭이벤트
+			pdGrid.on('dblclick', e => {
+				var rk = e.rowKey;
+				prn = pdGrid.getRow(rk).prnum
+				for(i=0; i<pdGrid.getRowCount(); i++) {
+					pdGrid.removeRowClassName(i, 'rowSelect')
+				}
+				pdGrid.addRowClassName(rk, 'rowSelect')
+				var rest = pdGrid.getRow(rk).cnrest
+				makeAjaxCall('matCheck', { prn }, function(result){
+					matGrid.resetData(result)
+					mrk = matGrid.getRowCount()
+					// 그리드에 값 넣어주기
+					for(i=0; i<mrk; i++) {
+						// pdGrid.getRow(rk).cnrest*matGrid.getRow(i).bam = 제품그리드 수주잔량 * bom 소요량
+						matGrid.setValue(i, 'pamount', (rest*matGrid.getRow(i).bam), false) // 필요량 -> 그리드 셀에 값을 넣는 함수 : setCoulumnValues(컬럼, 넣을값, 뭔지모르겠으니까 false)
+						if(matGrid.getRow(i).pamount-matGrid.getRow(i).msciam > 0) {
+							matGrid.setValue(i, 'lamount', (matGrid.getRow(i).pamount-matGrid.getRow(i).msciam), false)
+							matGrid.addCellClassName(i, 'lamount', 'matDanger')
+							matGrid.on('dblclick', el => {
+								if(el.columnName == 'lamount' && matGrid.getValue(el.rowKey, 'lamount') !== null) {
+									mc = matGrid.getRow(el.rowKey).micode
+									mn = matGrid.getRow(el.rowKey).miname
+									oa = matGrid.getRow(el.rowKey).lamount
+									$('#matCode').val(mc)
+									$('#matName').val(mn)
+									$('#orderAmount').val(oa)
+									modal3.dialog('open')
+								}
+							})
+						}
+					}
+				})
+			})
+			
+			
+			// 부족한 자재 발주요청
+			function requestMat(){
+				var micode = $('#matCode').val()
+				var orderAmount = $('#orderAmount').val()
+				makeAjaxCall('requestMat', { micode, orderAmount }, function(){
+					modal3.dialog('close')
+					swal('성공', '발주요청이 완료되었습니다.', 'success')
+				})
+			}
+			
+		// 그리드 함수 끝 -----------------------------------
+		
+		// 버튼 함수---------------------------------------------
+		
+		/* 새자료 -> 끝 */ 
+		$('#resetBtn').on('click', function() {
+			fnFormClear();
+		})
+
+		function fnFormClear() {
+			document.getElementById('dataForm').reset();
+			$('#planDt').val('');
+			datepicker1.setDate(new Date());
+			datepicker2.setStartDate(new Date());
+			datepicker2.setEndDate(new Date());
+			picker.setStartDate(new Date());
+			picker.setEndDate(new Date());
+			matGrid.resetData(selectMat);
+			pdGrid.resetData(totalPd);
+		}
+		
+		
+		/* 생산계획 등록 */
+		$('#saveBtn').on('click', function(){
+			if($('#planNum').val() == '') { // input hidden에 담아놓은 생산계획번호가 없을 때만 등록
+				if($('#planName').val() != '') {
+					if($('td').hasClass('tui-grid-cell-invalid') == false) { // 제품테이블 그리드중에 입력안된값이 있으면 등록 못하도록
+						// 등록
+						addProdPlan();
+					} else {
+						swal('입력되지 않은 값이 있습니다.', '', 'warning')
+					}
+				} else {
+					swal('생산계획명을 입력하세요.', '', 'warning')
+				}
+			} else { // input hidden에 담아놓은 생산계획번호가 있을 때는 수정
+				// 수정
+				if($('#planName').val() != '') {
+					if($('#planStatus').val() == '미지시') {
+						if($('td').hasClass('tui-grid-cell-invalid') == false) { // 제품테이블 그리드중에 입력안된값이 있으면 등록 못하도록
+							// 등록
+							updateProdPlan();
+						} else {
+							swal('입력되지 않은 값이 있습니다.', '', 'warning')
+						}
+					} else {
+						swal('생산지시가 내려진 계획입니다.', '', 'warning')
+					}
+				} else {
+					swal('생산계획명을 입력하세요.', '', 'warning')
+				}
+			}
+		}) 
+		
+		/* 생산계획 등록 함수 */
+			function addProdPlan() {
+				// 등록
+				var ppdate = $('#planDt').val() // 생산계획일자(text)
+				var ppname = $('#planName').val() // 생산계획이름
+				var ppnote = $('#planNote').val() // 생산계획비고
+				var promise = $.ajax({
+									url: 'addProdPlan',
+									method: 'POST',
+									data: { ppdate, ppname, ppnote },
+									});
+				
+				promise.done(pplanInsert);
+				promise.fail(failFnc);
+				
+				// 등록 promise
+				function pplanInsert(result) {
+					$('#planNum').val(result.ppnum) // input hidden에 생산계획일 담기
+					var ppnum = $('#planNum').val()
+					ark = pdGrid.getRowCount()
+					for(i=0; i<ark; i++) {
+						pdGrid.setValue(i, 'ppnum', ppnum, false)
+						pdGrid.setValue(i, 'ppdnum', ppnum+'-'+(i+1), false)
+					}
+					allData = pdGrid.getData() // 제품목록에 있는 모든 정보
+					$.ajax({
+						url: 'addPPlanDetail',
+						method: 'POST',
+						data: JSON.stringify(allData), // 객체배열 json타입으로 변경
+						contentType:'application/json',
+						success: function(){
+							swal('성공', '생산계획 등록이 완료되었습니다.', 'success')
+						}
+					})
+				}
+						
+				function failFnc(result) {
+					swal('실패', '생산계획 등록에 실패했습니다.', 'error')
+				}
+				
+			}
+		
+		/* 생산계획 수정 함수 */
+			function updateProdPlan() {
+				var ppnum = $('#planNum').val() // 생산계획번호
+				var ppname = $('#planName').val() // 생산계획이름
+				var ppnote = $('#planNote').val() // 생산계획비고
+				var promise = $.ajax({
+					url: 'updateProdPlan',
+					method: 'POST',
+					data: { ppnum, ppname, ppnote },
+					});
+				
+				promise.done(pplanUpdate);
+				promise.fail(failFnc);
+				
+				function pplanUpdate(){
+					for(i=0; i<pdGrid.getRowCount(); i++) {
+						pdGrid.setValue(i, 'ppnum', ppnum, false)
+						pdGrid.setValue(i, 'ppdnum', ppnum+'-'+(i+1), false)
+					}
+					allData = pdGrid.getData() // 제품목록에 있는 모든 정보
+					console.log(allData)
+					$.ajax({
+						url: 'addPPlanDetail',
+						method: 'POST',
+						data: JSON.stringify(allData), // 객체배열 json타입으로 변경
+						contentType:'application/json',
+						success: function(){
+							swal('성공', '생산계획 수정이 완료되었습니다.', 'success')
+						}
+					})
+				}
+				
+				function failFnc(result) {
+					swal('실패', '생산계획 수정에 실패했습니다.', 'error')
+				}
+				
+			}
+		
+		/* 생산계획 삭제 */
+		$('#removeBtn').on('click', function(){
+			if($('#planNum').val() != '') {
+				if($('#planStatus').val() == '미지시') {
+					var ppnum = $('#planNum').val()
+					$.ajax({
+						url: 'removeProdPlan',
+						method: 'POST',
+						data: { ppnum },
+						success: function(){
+							swal('성공', '생산계획 삭제가 완료되었습니다.', 'success')
+							fnFormClear();
+							$('#planNum').val('')
+						}
+					})
+				} else {
+					swal('생산지시가 내려진 계획입니다.', '', 'warning')
+				}
+			} else {
+				swal('삭제할 내역이 없습니다.', '', 'warning')
+			}
+		})
+		
+		// 버튼끝------------------------------------------
+		
+
+		}) // $(function) 끝
+		
+		
+		// 달력---------------------------------------------
+	
+		/* 계획일자 */
+		const datepicker1 = new tui.DatePicker('#wrapper', {
+			date : new Date(),
+			input : {
+				element : '#planDt',
+				format : 'yyyy-MM-dd'
+			},
+			language : 'ko'
+
+		});
+
+		/* 미생산 의뢰조회 모달 달력 */
+		var today = new Date();
+		var range = new Date(today.getFullYear() + 1, today.getMonth(),
+								today.getDate());
+		const datepicker2 = new tui.DatePicker.createRangePicker({
+			startpicker : {
+				date : today,
+				input : '#requestDtS',
+				container : '#requestDtS-wapper'
+			},
+			endpicker : {
+				date : today,
+				input : '#requestDtE',
+				container : '#requestDtE-wapper'
+			},
+			language : 'ko'
+		});
+		
+		/* 생산계획 작성일자 모달 달력 */
+		var picker = new tui.DatePicker.createRangePicker({
+			startpicker : {
+				date : today,
+				input : '#pplanDtS',
+				container : '#pplanDtS-wapper'
+			},
+			endpicker : {
+				date : today,
+				input : '#pplanDtE',
+				container : '#pplanDtE-wapper'
+			},
+			language : 'ko'
+		});
+		
+		// 달력끝------------------------------------------
+		
+		
+		
+		
+	</script>
+	</th:block>
+</body>
+
+</html>

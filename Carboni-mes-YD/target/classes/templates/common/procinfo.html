@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/layout}">
+  <th:block layout:fragment="main">
+  <head>
+    <meta charset="UTF-8">
+    </head>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+      crossorigin="anonymous"></script>
+    <style>
+    h1 {
+      margin: 20px 10px 10px 20px;
+    }
+    
+    #menu {
+      float: right;
+      margin-right: 20px;
+      text-align: right;
+      margin-top: 40px;
+    }
+  #menu > a {
+    text-decoration: none;
+    color: black;
+  }
+  .btn-secondary {
+	margin-left: 5px;
+  }
+    
+    #container {
+      clear: both;
+    }
+    
+    #myf {
+      margin: 10px;
+      clear: both;
+      width: 550px;
+      display: none;
+    }
+    
+    #myf>label {
+      width: 60px;
+      font-size: 80%;
+      text-align: center;
+    }
+    #myf>input{
+      margin: 2px 0 0 0;
+    }
+    
+    #lineGrid {
+      margin: 10px;
+    }
+    
+    </style>
+    
+    <body>
+    
+      <div id="menu">
+        <a href="/"><i class="bi bi-house-door-fill"></i></a> > 기준정보관리 > <b>공정코드관리</b>
+      </div>
+      <h1>공정코드 관리</h1>
+      <div id="btns" class="card-header">
+      <div style="display: flex; justify-content: flex-end;">
+        <input sec:authorize="hasRole('ROLE_a')" type="button" class="btn btn-secondary" value="신규" onclick="showit()">
+        <button type="button" class="btn btn-secondary" id="ex">엑셀</button>
+        <input sec:authorize="hasRole('ROLE_a')" type="button" class="btn btn-secondary" value="저장" onclick="check()">
+        <input sec:authorize="hasRole('ROLE_a')" type="button" class="btn btn-secondary" value="삭제" onclick="del()">
+      </div>
+      </div>
+      <form id="myf" name="myf">
+        <label for="picodeid">공정코드</label> <input type="text" id="picodeid" name="picodeid" readonly>
+        <label for="piname">공정명</label> <input type="text" id="piname" name="piname">
+        <label for="pidate">소요일수</label> <input type="text" id="pidate" name="pidate">
+        <label for="sinum">설비번호</label> <input type="text" id="sinum" name="sinum">
+        <hr>
+        <label for="pione">1차공정</label> <input type="text" id="pione" name="pione">
+        <label for="pitwo">2차공정</label> <input type="text" id="pitwo" name="pitwo">
+        <label for="pithree">3차공정</label> <input type="text" id="pithree" name="pithree">
+        <label for="pifour">4차공정</label> <input type="text" id="pifour" name="pifour">
+      </form>
+      <div id="container">
+        <div class="card mb-4">
+          <div class="card-header">
+            <i class="fas fa-table me-1"></i> 공정상세
+          </div>
+          <div class="card-body">
+            <table id="datatablesSimple">
+              <thead>
+                <tr>
+                  <th><input type="radio" name="proc"></th>
+                  <th>공정코드</th>
+                  <th>공정명</th>
+                  <th>소요일수</th>
+                  <th>설비번호</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="p : ${list}">
+                  <td><input type="radio" name="proc"></td>
+                  <td th:text = "${p.picodeid}"></td>
+                  <td th:text = "${p.piname}"></td>
+                  <td th:text = "${p.pidate}"></td>
+                  <td th:text = "${p.sinum}"></td>
+                  <td style="display:none" th:text = "${p.pione}"></td>
+                  <td style="display:none" th:text = "${p.pitwo}"></td>
+                  <td style="display:none" th:text = "${p.pithree}"></td>
+                  <td style="display:none" th:text = "${p.pifour}"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div id="lineGrid"></div>
+      </div>
+    </body>
+    <script>
+    
+    	// 신규
+    	function showit(){
+			$('#myf>input').val('');
+			$('#myf').show();
+    	}
+    	
+    	// 입력수정
+    	function check(){
+    		if($(piname).val() == '' || $(pidate).val() == '' || $(pione).val()==''){
+    			swal('항목을 입력하십시오', '공정명, 소요일수, 1차공정은 필수 입력 항목입니다.', 'warning');
+    		} else if ($(picodeid).val() == ''){
+    			document.myf.action = 'procinfoinsert';
+    			document.myf.submit();
+    		} else {
+    			document.myf.action = 'procinfoupdate';
+    			document.myf.submit();
+    		}
+    	}
+    	
+    	// 삭제
+    	function del(){
+    		if($(picodeid).val() == ''){
+    			swal('항목을 입력하십시오', '공정을 선택하여 삭제하여 주십시오.', 'warning');
+    		} else {
+    			document.myf.action = 'procinfodelete';
+    			document.myf.submit();
+    		}
+    	}
+    
+    // 라디오 -> 입력, 상세공정 그리드
+    $(document).on('click', 'input[name="proc"]', function(){
+		$(picodeid).val($('input[name=proc]:checked').parent().parents().children().eq(1).text())
+		$(piname).val($('input[name=proc]:checked').parent().parents().children().eq(2).text())
+		$(pidate).val($('input[name=proc]:checked').parent().parents().children().eq(3).text())
+		$(sinum).val($('input[name=proc]:checked').parent().parents().children().eq(4).text())
+		$(pione).val($('input[name=proc]:checked').parent().parents().children().eq(5).text())
+		$(pitwo).val($('input[name=proc]:checked').parent().parents().children().eq(6).text())
+		$(pithree).val($('input[name=proc]:checked').parent().parents().children().eq(7).text())
+		$(pifour).val($('input[name=proc]:checked').parent().parents().children().eq(8).text())
+    	$('#lineGrid').children().remove();
+  $.ajax({
+        url : 'selectLine',
+        data: {picodeid:picodeid.value},
+        dataType: 'JSON',
+        success : function(result){
+            grid.resetData(result);
+        } 
+    });
+    var grid = new tui.Grid({
+      el: document.getElementById('lineGrid'),
+      scrollX: false,
+      scrollY: false,
+      columns: [{
+        header: '1차공정',
+        name: 'pione',
+        align: 'center',
+      }, {
+        header: '2차공정',
+        name: 'pitwo',
+        align: 'center'
+      }, {
+        header: '3차공정',
+        name: 'pithree',
+        align: 'center'
+      }, {
+        header: '4차공정',
+        name: 'pifour',
+        align: 'center'
+      }]
+     });
+	});
+	
+	//엑셀
+	$('#ex').on('click', function(){
+		location.href="procinfoEx"
+	});
+    	
+    </script>
+</th:block>
+</html>

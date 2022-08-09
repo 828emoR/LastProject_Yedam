@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="main">
+<head>
+  <meta charset="UTF-8">
+</head>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js" integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY=" crossorigin="anonymous"></script>
+<style>
+  h1 {
+    margin: 20px 10px 10px 20px;
+  }
+
+  #myf {
+    margin: 10px;
+    width: 600px;
+    clear: both;
+  }
+
+  #myf>label {
+    width: 80px;
+    font-size: 80%;
+    text-align: center;
+    }
+  #myf>input{
+    margin: 2px 0 0 0;
+  }
+
+  #menu {
+    float: right;
+    margin-right: 20px;
+    text-align: right;
+    margin-top: 20px;
+  }
+  
+  #menu > a {
+    text-decoration: none;
+    color: black;
+  }
+  
+  .btn-secondary {
+	margin-left: 5px;
+  }
+  
+  #gname{
+  	font-weight: 400;
+  }
+
+</style>
+
+<body>
+
+  <div id="container">
+
+    <div id="menu">
+      <a href="/"><i class="bi bi-house-door-fill"></i></a> > 기준정보관리 > <b>제품BOM정보관리</b>
+    </div>
+    <h1>제품BOM정보 관리</h1>
+      <div id="btns" class="card-header">
+      <div style="display: flex; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" id="newthat">새자료</button>
+        <button type="button" class="btn btn-secondary" id="ex">엑셀</button>
+        <button type="button" class="btn btn-secondary" id="search">검색</button>
+        <button sec:authorize="hasRole('ROLE_a')" type="button" class="btn btn-secondary" onclick="check()">저장</button>
+        <button sec:authorize="hasRole('ROLE_a')" type="button" class="btn btn-secondary" onclick="del()">삭제</button>
+      </div>
+      </div>
+    <form id="myf" name="subform">
+      <label for="gicode">제품코드</label> <input type="text" id="gicode" name="gicode">
+      <label for="micode">자재코드</label> <input type="text" id="micode" name="micode">
+      <label for="bam">사용량</label> <input type="text" id="bam" name="bam">
+      <label for="bnote">비고</label> <input type="text" id="bnote" name="bnote">
+    </form>
+    
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="fas fa-table me-1"></i> <b id="bname">제품명</b>
+      </div>
+      <div class="card-body">
+        <table id="datatablesSimple">
+          <thead>
+            <tr>
+              <th><input type="radio"></th>
+              <th>자재코드</th>
+              <th>자재명</th>
+              <th>사용량</th>
+              <th>비고</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+	<div id="dialog1" title="제품코드"></div>
+	<div id="dialog2" title="자재코드"></div>
+
+  </div>
+
+</body>
+<script>
+
+		// 제품호출
+		$('#gicode').on('click', function(){
+			 $("#dialog1").dialog("open")
+			 $.ajax({
+			 	url: 'selectGoods',
+			 	dataType: 'JSON',
+			 	success: function(result){
+			 		goodsgrid.refreshLayout();
+			 		goodsgrid.resetData(result);
+			 		goodsgrid.on('click', ev =>{
+			 			goodscode = goodsgrid.getRow(ev.rowKey).gicode
+			 		})
+			 	}
+			 })
+		})
+		
+		//제품모달
+		$("#dialog1").dialog({
+			autoOpen: false,
+			modal: true,
+			width: 500,
+			height: 600,
+			buttons: [{
+					text: "확인",
+					click: function() {
+						$('#gicode').val(goodscode)
+						$(this).dialog("close");
+						}
+					}
+				]
+			});
+
+	// 제품모달 안 그리드
+    var goodsgrid = new tui.Grid({
+      el: document.getElementById('dialog1'),
+      scrollX: false,
+      scrollY: false,
+      rowHeaders: ['rowNum'],
+      columns: [{
+        header: '제품코드',
+        name: 'gicode',
+        align: 'center',
+        width: 200,
+      }, {
+        header: '제품명',
+        name: 'giname',
+        align: 'center',
+        width: 200,
+      }]
+    });
+    
+    
+    	// 자재호출
+		$('#micode').on('click', function(){
+			 $("#dialog2").dialog("open")
+			 $.ajax({
+			 	url: 'matlist',
+			 	dataType: 'JSON',
+			 	success: function(result){
+			 		grid.refreshLayout();
+			 		grid.resetData(result);
+			 		grid.on('click', ev =>{
+			 			code = grid.getRow(ev.rowKey).micode
+			 		})
+			 	}
+			 })
+		})
+		
+		// 자재모달
+		$("#dialog2").dialog({
+			autoOpen: false,
+			modal: true,
+			width: 500,
+			height: 600,
+			buttons: [{
+					text: "확인",
+					click: function(){
+						$('#micode').val(code)
+						$(this).dialog('close')
+					},
+					}
+				]
+			});
+			
+	// 자재그리드
+    var grid = new tui.Grid({
+      el: document.getElementById('dialog2'),
+      scrollX: false,
+      scrollY: false,
+      rowHeaders: ['rowNum'],
+      columns: [{
+        header: '자재코드',
+        name: 'micode',
+        align: 'center',
+        width: 200,
+      }, {
+        header: '자재명',
+        name: 'miname',
+        align: 'center',
+        width: 200,
+      }]
+    });
+	
+	// 새자료
+    $('#newthat').click(function () {
+      $('#myf>input').val('');
+    })
+    
+    // 제품코드로 BOM검색
+    $('#search').click(function() {
+    	if($('#gicode').val() == ''){
+    		swal('항목을 입력하십시오', '제품코드를 입력하여 검색해 주십시오.', 'warning');
+    	} else{
+    		$.ajax({
+    			url: 'selectBom',
+    			data: {gicode: gicode.value},
+    			dataType: 'JSON',
+    			success: function(giresult){
+  						$('#tbody').children().remove();
+  					    giresult.forEach(ele => {
+    					var mktr = $('<tr>');
+    					mktr.append($('<td>').html('<input type="radio" name="list">'))
+    					mktr.append($('<td style="display:none">').html(ele.GICODE))
+    					mktr.append($('<td>').html(ele.MICODE))
+    					mktr.append($('<td>').html(ele.MINAME))
+    					mktr.append($('<td>').html(ele.BAM))
+    					mktr.append($('<td>').html(ele.BNOTE))
+    					mktr.appendTo($('#tbody'))
+    					$('#bname').text(ele.GINAME)
+					})
+				}
+			})
+		}
+	})
+    
+    // 새자료
+    $('#newthat').click(function () {
+      $('#myf>input').val('');
+    })
+    
+    // 입력수정
+    function check(){
+    	if($('#gicode').val() == '' || $('#micode').val() == '' ){
+    		swal('항목을 입력하십시오', '제품과 자재 코드는 필수입력 조건입니다.', 'warning');
+    	} else{
+    		document.subform.action='bominsert';
+    		document.subform.submit();
+    	}
+    }
+    
+    // 삭제
+    function del(){
+    	if($('#gicode').val() == '' || $('#micode').val() == '' ){
+    		swal('항목을 입력하십시오', '제품과 자재 코드는 필수입력 조건입니다.', 'warning');
+    	} else{
+    		document.subform.action='bomdelete';
+    		document.subform.submit();
+    	}
+    }
+    
+    // radio입력
+    $(document).on('click', 'input[name="list"]', function(){
+		$('#gicode').val($('input[name=list]:checked').parent().parents().children().eq(1).text())
+		$('#micode').val($('input[name=list]:checked').parent().parents().children().eq(2).text())
+		$('#bam').val($('input[name=list]:checked').parent().parents().children().eq(4).text())
+		$('#bnote').val($('input[name=list]:checked').parent().parents().children().eq(5).text())
+	});
+	
+	//엑셀
+	$('#ex').on('click', function(){
+		location.href="bomEx"
+	});
+</script>
+</th:block>
+
+</html>

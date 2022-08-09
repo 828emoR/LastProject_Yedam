@@ -1,0 +1,298 @@
+2022-08-09 10:18:37.695  INFO 15308 --- [restartedMain] co.carboni.prj.CarboniMesApplication     : Starting CarboniMesApplication using Java 11.0.13 on YD-15 with PID 15308 (C:\Users\admin\git\Caboni\Carboni-mes\target\classes started by admin in C:\Users\admin\git\Caboni\Carboni-mes)
+2022-08-09 10:18:37.697 DEBUG 15308 --- [restartedMain] co.carboni.prj.CarboniMesApplication     : Running with Spring Boot v2.7.1, Spring v5.3.21
+2022-08-09 10:18:37.698  INFO 15308 --- [restartedMain] co.carboni.prj.CarboniMesApplication     : No active profile set, falling back to 1 default profile: "default"
+2022-08-09 10:18:38.229  INFO 15308 --- [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\admin\.m2\repository\com\oracle\database\jdbc\ojdbc8\21.5.0.0\ojdbc8-21.5.0.0.jar referenced one or more files that do not exist: file:/C:/Users/admin/.m2/repository/com/oracle/database/jdbc/ojdbc8/21.5.0.0/oraclepki.jar
+2022-08-09 10:18:38.235  INFO 15308 --- [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\admin\.m2\repository\com\oracle\database\security\oraclepki\21.5.0.0\oraclepki-21.5.0.0.jar referenced one or more files that do not exist: file:/C:/Users/admin/.m2/repository/com/oracle/database/security/oraclepki/21.5.0.0/osdt_core.jar,file:/C:/Users/admin/.m2/repository/com/oracle/database/security/oraclepki/21.5.0.0/osdt_cert.jar,file:/C:/Users/admin/.m2/repository/com/oracle/database/security/oraclepki/oracle.osdt/osdt_core.jar,file:/C:/Users/admin/.m2/repository/com/oracle/database/security/oraclepki/oracle.osdt/osdt_cert.jar
+2022-08-09 10:18:38.236  INFO 15308 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-08-09 10:18:38.236  INFO 15308 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-08-09 10:18:40.610  INFO 15308 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 81 (http)
+2022-08-09 10:18:40.630  INFO 15308 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-08-09 10:18:40.630  INFO 15308 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-08-09 10:18:40.826  INFO 15308 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-08-09 10:18:40.828  INFO 15308 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2591 ms
+2022-08-09 10:18:42.406  INFO 15308 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2264d923, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@32f53d0c, org.springframework.security.web.context.SecurityContextPersistenceFilter@191ebc47, org.springframework.security.web.header.HeaderWriterFilter@5c6d7fc2, org.springframework.security.web.authentication.logout.LogoutFilter@18acbf25, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@af88028, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6f24c1dd, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1d3d5d45, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1a369754, org.springframework.security.web.session.SessionManagementFilter@404a82f8, org.springframework.security.web.access.ExceptionTranslationFilter@65cafbd3, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2b8bb83a]
+2022-08-09 10:18:43.344  INFO 15308 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-08-09 10:18:43.431  INFO 15308 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 81 (http) with context path ''
+2022-08-09 10:18:43.452  INFO 15308 --- [restartedMain] co.carboni.prj.CarboniMesApplication     : Started CarboniMesApplication in 6.507 seconds (JVM running for 7.332)
+2022-08-09 10:18:48.574  INFO 15308 --- [http-nio-81-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-08-09 10:18:48.575  INFO 15308 --- [http-nio-81-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-08-09 10:18:48.576  INFO 15308 --- [http-nio-81-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2022-08-09 10:18:48.749  WARN 15308 --- [http-nio-81-exec-1] o.a.c.util.SessionIdGeneratorBase        : Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [122] milliseconds.
+2022-08-09 10:18:54.010  INFO 15308 --- [http-nio-81-exec-8] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-09 10:18:54.469  INFO 15308 --- [http-nio-81-exec-8] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-09 10:18:54.480 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.people.mapper.UserMapper.getUser   : ==>  Preparing: SELECT * FROM LOGIN WHERE LID = ?
+2022-08-09 10:18:54.622 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.people.mapper.UserMapper.getUser   : ==> Parameters: King(String)
+2022-08-09 10:18:54.732 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.people.mapper.UserMapper.getUser   : <==      Total: 1
+2022-08-09 10:19:51.023 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR, M.SYSADMIN, (select ename from employee where ecode = m.sysadmin)ename, (select eposition from employee where ecode = m.sysadmin)eposition FROM SYSINFO S, PROCINFO P, SYSMAN M WHERE S.PICODEID = P.PICODEID AND S.SINUM = M.SINUM ORDER BY SINUM
+2022-08-09 10:19:51.024 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==> Parameters: 
+2022-08-09 10:19:51.104 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.SysinfoMapper.selectSysAll     : <==      Total: 4
+2022-08-09 10:19:51.105 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==>  Preparing: SELECT PICODEID, PINAME FROM PROCINFO
+2022-08-09 10:19:51.105 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==> Parameters: 
+2022-08-09 10:19:51.116 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.SysinfoMapper.selectPicoid     : <==      Total: 7
+2022-08-09 10:19:53.843 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, M.SMSTATUS, M.SMMNTEND, M.SIMAINT, M.SIDATE, M.SIDIE, M.SYSADMIN, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR FROM SYSINFO S, SYSMAN M, PROCINFO P WHERE S.SINUM = M.SINUM(+) AND S.SINUM = P.SINUM(+) AND S.SINUM = ? ORDER BY SINUM
+2022-08-09 10:19:53.844 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==> Parameters: SS-1(String)
+2022-08-09 10:19:53.921 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : <==      Total: 1
+2022-08-09 10:19:53.922 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysStartDie            : ==>  Preparing: SELECT SIDATE, SIDIE FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:19:53.922 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysStartDie            : ==> Parameters: SS-1(String)
+2022-08-09 10:19:53.932 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysStartDie            : <==      Total: 1
+2022-08-09 10:19:53.933 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysCondition           : ==>  Preparing: SELECT SMSTATUS FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:19:53.933 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysCondition           : ==> Parameters: SS-1(String)
+2022-08-09 10:19:53.942 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysCondition           : <==      Total: 1
+2022-08-09 10:19:53.943 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysLifespan            : ==>  Preparing: SELECT SIDATE, TRUNC(SIDIE-SIDATE) ALLDATE ,TRUNC(100-((SIDIE-SYSDATE)/(SIDIE-SIDATE)*100), 1)||'%' NOWPERCENT , SIDIE, TRUNC(SIDIE-SYSDATE) LEFTENDDAT FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:19:53.944 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysLifespan            : ==> Parameters: SS-1(String)
+2022-08-09 10:19:53.958 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysLifespan            : <==      Total: 1
+2022-08-09 10:19:53.959 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectMaint      : ==>  Preparing: SELECT SIMAINT, SIDATE, TO_DATE(SIDATE+SIMAINT) NEXTDAT, TRUNC((100/((SIDATE+SIMAINT)-SYSDATE)), 1)||'%' NOWPERCENT2 FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:19:53.959 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectMaint      : ==> Parameters: SS-1(String)
+2022-08-09 10:19:53.969 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectMaint      : <==      Total: 1
+2022-08-09 10:23:07.786 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, M.SMSTATUS, M.SMMNTEND, M.SIMAINT, M.SIDATE, M.SIDIE, M.SYSADMIN, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR FROM SYSINFO S, SYSMAN M, PROCINFO P WHERE S.SINUM = M.SINUM(+) AND S.SINUM = P.SINUM(+) AND S.SINUM = ? ORDER BY SINUM
+2022-08-09 10:23:07.787 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==> Parameters: SS-1(String)
+2022-08-09 10:23:07.834 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : <==      Total: 1
+2022-08-09 10:23:07.835 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.S.selectSysStartDie            : ==>  Preparing: SELECT SIDATE, SIDIE FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:07.835 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.S.selectSysStartDie            : ==> Parameters: SS-1(String)
+2022-08-09 10:23:07.844 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.S.selectSysStartDie            : <==      Total: 1
+2022-08-09 10:23:07.844 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.S.selectSysCondition           : ==>  Preparing: SELECT SMSTATUS FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:07.845 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.S.selectSysCondition           : ==> Parameters: SS-1(String)
+2022-08-09 10:23:07.854 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.S.selectSysCondition           : <==      Total: 1
+2022-08-09 10:23:07.855 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.S.selectSysLifespan            : ==>  Preparing: SELECT SIDATE, TRUNC(SIDIE-SIDATE) ALLDATE ,TRUNC(100-((SIDIE-SYSDATE)/(SIDIE-SIDATE)*100), 1)||'%' NOWPERCENT , SIDIE, TRUNC(SIDIE-SYSDATE) LEFTENDDAT FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:07.856 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.S.selectSysLifespan            : ==> Parameters: SS-1(String)
+2022-08-09 10:23:07.866 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.S.selectSysLifespan            : <==      Total: 1
+2022-08-09 10:23:07.867 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectMaint      : ==>  Preparing: SELECT SIMAINT, SIDATE, TO_DATE(SIDATE+SIMAINT) NEXTDAT, TRUNC((100/((SIDATE+SIMAINT)-SYSDATE)), 1)||'%' NOWPERCENT2 FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:07.867 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectMaint      : ==> Parameters: SS-1(String)
+2022-08-09 10:23:07.876 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectMaint      : <==      Total: 1
+2022-08-09 10:23:11.001 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR, M.SYSADMIN, (select ename from employee where ecode = m.sysadmin)ename, (select eposition from employee where ecode = m.sysadmin)eposition FROM SYSINFO S, PROCINFO P, SYSMAN M WHERE S.PICODEID = P.PICODEID AND S.SINUM = M.SINUM ORDER BY SINUM
+2022-08-09 10:23:11.003 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==> Parameters: 
+2022-08-09 10:23:11.053 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectSysAll     : <==      Total: 4
+2022-08-09 10:23:11.054 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==>  Preparing: SELECT PICODEID, PINAME FROM PROCINFO
+2022-08-09 10:23:11.055 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==> Parameters: 
+2022-08-09 10:23:11.066 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectPicoid     : <==      Total: 7
+2022-08-09 10:23:13.020 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR, M.SYSADMIN, (select ename from employee where ecode = m.sysadmin)ename, (select eposition from employee where ecode = m.sysadmin)eposition FROM SYSINFO S, PROCINFO P, SYSMAN M WHERE S.PICODEID = P.PICODEID AND S.SINUM = M.SINUM ORDER BY SINUM
+2022-08-09 10:23:13.021 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==> Parameters: 
+2022-08-09 10:23:13.073 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectSysAll     : <==      Total: 4
+2022-08-09 10:23:13.074 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==>  Preparing: SELECT PICODEID, PINAME FROM PROCINFO
+2022-08-09 10:23:13.075 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==> Parameters: 
+2022-08-09 10:23:13.085 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectPicoid     : <==      Total: 7
+2022-08-09 10:23:17.422 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, M.SMSTATUS, M.SMMNTEND, M.SIMAINT, M.SIDATE, M.SIDIE, M.SYSADMIN, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR FROM SYSINFO S, SYSMAN M, PROCINFO P WHERE S.SINUM = M.SINUM(+) AND S.SINUM = P.SINUM(+) AND S.SINUM = ? ORDER BY SINUM
+2022-08-09 10:23:17.423 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==> Parameters: SS-1(String)
+2022-08-09 10:23:17.472 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : <==      Total: 1
+2022-08-09 10:23:17.473 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.S.selectSysStartDie            : ==>  Preparing: SELECT SIDATE, SIDIE FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:17.473 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.S.selectSysStartDie            : ==> Parameters: SS-1(String)
+2022-08-09 10:23:17.482 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.S.selectSysStartDie            : <==      Total: 1
+2022-08-09 10:23:17.482 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.S.selectSysCondition           : ==>  Preparing: SELECT SMSTATUS FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:17.483 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.S.selectSysCondition           : ==> Parameters: SS-1(String)
+2022-08-09 10:23:17.491 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.S.selectSysCondition           : <==      Total: 1
+2022-08-09 10:23:17.492 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.S.selectSysLifespan            : ==>  Preparing: SELECT SIDATE, TRUNC(SIDIE-SIDATE) ALLDATE ,TRUNC(100-((SIDIE-SYSDATE)/(SIDIE-SIDATE)*100), 1)||'%' NOWPERCENT , SIDIE, TRUNC(SIDIE-SYSDATE) LEFTENDDAT FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:17.492 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.S.selectSysLifespan            : ==> Parameters: SS-1(String)
+2022-08-09 10:23:17.501 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.S.selectSysLifespan            : <==      Total: 1
+2022-08-09 10:23:17.501 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectMaint      : ==>  Preparing: SELECT SIMAINT, SIDATE, TO_DATE(SIDATE+SIMAINT) NEXTDAT, TRUNC((100/((SIDATE+SIMAINT)-SYSDATE)), 1)||'%' NOWPERCENT2 FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:17.502 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectMaint      : ==> Parameters: SS-1(String)
+2022-08-09 10:23:17.511 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectMaint      : <==      Total: 1
+2022-08-09 10:23:19.720 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR, M.SYSADMIN, (select ename from employee where ecode = m.sysadmin)ename, (select eposition from employee where ecode = m.sysadmin)eposition FROM SYSINFO S, PROCINFO P, SYSMAN M WHERE S.PICODEID = P.PICODEID AND S.SINUM = M.SINUM ORDER BY SINUM
+2022-08-09 10:23:19.721 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==> Parameters: 
+2022-08-09 10:23:19.771 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectSysAll     : <==      Total: 4
+2022-08-09 10:23:19.772 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==>  Preparing: SELECT PICODEID, PINAME FROM PROCINFO
+2022-08-09 10:23:19.773 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==> Parameters: 
+2022-08-09 10:23:19.784 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectPicoid     : <==      Total: 7
+2022-08-09 10:23:21.768 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, M.SMSTATUS, M.SMMNTEND, M.SIMAINT, M.SIDATE, M.SIDIE, M.SYSADMIN, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR FROM SYSINFO S, SYSMAN M, PROCINFO P WHERE S.SINUM = M.SINUM(+) AND S.SINUM = P.SINUM(+) AND S.SINUM = ? ORDER BY SINUM
+2022-08-09 10:23:21.768 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==> Parameters: SS-2(String)
+2022-08-09 10:23:21.816 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : <==      Total: 1
+2022-08-09 10:23:21.816 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.S.selectSysStartDie            : ==>  Preparing: SELECT SIDATE, SIDIE FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:21.817 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.S.selectSysStartDie            : ==> Parameters: SS-2(String)
+2022-08-09 10:23:21.825 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.S.selectSysStartDie            : <==      Total: 1
+2022-08-09 10:23:21.826 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.S.selectSysCondition           : ==>  Preparing: SELECT SMSTATUS FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:21.826 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.S.selectSysCondition           : ==> Parameters: SS-2(String)
+2022-08-09 10:23:21.834 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.S.selectSysCondition           : <==      Total: 1
+2022-08-09 10:23:21.834 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.S.selectSysLifespan            : ==>  Preparing: SELECT SIDATE, TRUNC(SIDIE-SIDATE) ALLDATE ,TRUNC(100-((SIDIE-SYSDATE)/(SIDIE-SIDATE)*100), 1)||'%' NOWPERCENT , SIDIE, TRUNC(SIDIE-SYSDATE) LEFTENDDAT FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:21.835 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.S.selectSysLifespan            : ==> Parameters: SS-2(String)
+2022-08-09 10:23:21.843 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.S.selectSysLifespan            : <==      Total: 1
+2022-08-09 10:23:21.844 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.SysinfoMapper.selectMaint      : ==>  Preparing: SELECT SIMAINT, SIDATE, TO_DATE(SIDATE+SIMAINT) NEXTDAT, TRUNC((100/((SIDATE+SIMAINT)-SYSDATE)), 1)||'%' NOWPERCENT2 FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:21.844 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.SysinfoMapper.selectMaint      : ==> Parameters: SS-2(String)
+2022-08-09 10:23:21.855 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.SysinfoMapper.selectMaint      : <==      Total: 1
+2022-08-09 10:23:24.114 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR, M.SYSADMIN, (select ename from employee where ecode = m.sysadmin)ename, (select eposition from employee where ecode = m.sysadmin)eposition FROM SYSINFO S, PROCINFO P, SYSMAN M WHERE S.PICODEID = P.PICODEID AND S.SINUM = M.SINUM ORDER BY SINUM
+2022-08-09 10:23:24.116 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==> Parameters: 
+2022-08-09 10:23:24.164 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectSysAll     : <==      Total: 4
+2022-08-09 10:23:24.166 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==>  Preparing: SELECT PICODEID, PINAME FROM PROCINFO
+2022-08-09 10:23:24.167 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==> Parameters: 
+2022-08-09 10:23:24.175 DEBUG 15308 --- [http-nio-81-exec-4] c.c.p.s.m.SysinfoMapper.selectPicoid     : <==      Total: 7
+2022-08-09 10:23:26.350 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, M.SMSTATUS, M.SMMNTEND, M.SIMAINT, M.SIDATE, M.SIDIE, M.SYSADMIN, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR FROM SYSINFO S, SYSMAN M, PROCINFO P WHERE S.SINUM = M.SINUM(+) AND S.SINUM = P.SINUM(+) AND S.SINUM = ? ORDER BY SINUM
+2022-08-09 10:23:26.351 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==> Parameters: SS-3(String)
+2022-08-09 10:23:26.399 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : <==      Total: 1
+2022-08-09 10:23:26.400 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysStartDie            : ==>  Preparing: SELECT SIDATE, SIDIE FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:26.400 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysStartDie            : ==> Parameters: SS-3(String)
+2022-08-09 10:23:26.409 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysStartDie            : <==      Total: 1
+2022-08-09 10:23:26.409 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysCondition           : ==>  Preparing: SELECT SMSTATUS FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:26.410 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysCondition           : ==> Parameters: SS-3(String)
+2022-08-09 10:23:26.419 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysCondition           : <==      Total: 1
+2022-08-09 10:23:26.419 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysLifespan            : ==>  Preparing: SELECT SIDATE, TRUNC(SIDIE-SIDATE) ALLDATE ,TRUNC(100-((SIDIE-SYSDATE)/(SIDIE-SIDATE)*100), 1)||'%' NOWPERCENT , SIDIE, TRUNC(SIDIE-SYSDATE) LEFTENDDAT FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:26.419 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysLifespan            : ==> Parameters: SS-3(String)
+2022-08-09 10:23:26.428 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysLifespan            : <==      Total: 1
+2022-08-09 10:23:26.428 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectMaint      : ==>  Preparing: SELECT SIMAINT, SIDATE, TO_DATE(SIDATE+SIMAINT) NEXTDAT, TRUNC((100/((SIDATE+SIMAINT)-SYSDATE)), 1)||'%' NOWPERCENT2 FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:26.429 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectMaint      : ==> Parameters: SS-3(String)
+2022-08-09 10:23:26.437 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectMaint      : <==      Total: 1
+2022-08-09 10:23:28.600 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR, M.SYSADMIN, (select ename from employee where ecode = m.sysadmin)ename, (select eposition from employee where ecode = m.sysadmin)eposition FROM SYSINFO S, PROCINFO P, SYSMAN M WHERE S.PICODEID = P.PICODEID AND S.SINUM = M.SINUM ORDER BY SINUM
+2022-08-09 10:23:28.601 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==> Parameters: 
+2022-08-09 10:23:28.648 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectSysAll     : <==      Total: 4
+2022-08-09 10:23:28.649 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==>  Preparing: SELECT PICODEID, PINAME FROM PROCINFO
+2022-08-09 10:23:28.650 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==> Parameters: 
+2022-08-09 10:23:28.658 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectPicoid     : <==      Total: 7
+2022-08-09 10:23:30.103 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, M.SMSTATUS, M.SMMNTEND, M.SIMAINT, M.SIDATE, M.SIDIE, M.SYSADMIN, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR FROM SYSINFO S, SYSMAN M, PROCINFO P WHERE S.SINUM = M.SINUM(+) AND S.SINUM = P.SINUM(+) AND S.SINUM = ? ORDER BY SINUM
+2022-08-09 10:23:30.105 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==> Parameters: SS-4(String)
+2022-08-09 10:23:30.152 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : <==      Total: 1
+2022-08-09 10:23:30.153 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.S.selectSysStartDie            : ==>  Preparing: SELECT SIDATE, SIDIE FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:30.154 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.S.selectSysStartDie            : ==> Parameters: SS-4(String)
+2022-08-09 10:23:30.163 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.S.selectSysStartDie            : <==      Total: 1
+2022-08-09 10:23:30.163 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.S.selectSysCondition           : ==>  Preparing: SELECT SMSTATUS FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:30.164 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.S.selectSysCondition           : ==> Parameters: SS-4(String)
+2022-08-09 10:23:30.172 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.S.selectSysCondition           : <==      Total: 1
+2022-08-09 10:23:30.173 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.S.selectSysLifespan            : ==>  Preparing: SELECT SIDATE, TRUNC(SIDIE-SIDATE) ALLDATE ,TRUNC(100-((SIDIE-SYSDATE)/(SIDIE-SIDATE)*100), 1)||'%' NOWPERCENT , SIDIE, TRUNC(SIDIE-SYSDATE) LEFTENDDAT FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:30.173 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.S.selectSysLifespan            : ==> Parameters: SS-4(String)
+2022-08-09 10:23:30.182 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.S.selectSysLifespan            : <==      Total: 1
+2022-08-09 10:23:30.183 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.SysinfoMapper.selectMaint      : ==>  Preparing: SELECT SIMAINT, SIDATE, TO_DATE(SIDATE+SIMAINT) NEXTDAT, TRUNC((100/((SIDATE+SIMAINT)-SYSDATE)), 1)||'%' NOWPERCENT2 FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:30.183 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.SysinfoMapper.selectMaint      : ==> Parameters: SS-4(String)
+2022-08-09 10:23:30.192 DEBUG 15308 --- [http-nio-81-exec-9] c.c.p.s.m.SysinfoMapper.selectMaint      : <==      Total: 1
+2022-08-09 10:23:32.303 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR, M.SYSADMIN, (select ename from employee where ecode = m.sysadmin)ename, (select eposition from employee where ecode = m.sysadmin)eposition FROM SYSINFO S, PROCINFO P, SYSMAN M WHERE S.PICODEID = P.PICODEID AND S.SINUM = M.SINUM ORDER BY SINUM
+2022-08-09 10:23:32.303 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==> Parameters: 
+2022-08-09 10:23:32.352 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectSysAll     : <==      Total: 4
+2022-08-09 10:23:32.352 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==>  Preparing: SELECT PICODEID, PINAME FROM PROCINFO
+2022-08-09 10:23:32.352 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==> Parameters: 
+2022-08-09 10:23:32.361 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectPicoid     : <==      Total: 7
+2022-08-09 10:23:37.315 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, M.SMSTATUS, M.SMMNTEND, M.SIMAINT, M.SIDATE, M.SIDIE, M.SYSADMIN, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR FROM SYSINFO S, SYSMAN M, PROCINFO P WHERE S.SINUM = M.SINUM(+) AND S.SINUM = P.SINUM(+) AND S.SINUM = ? ORDER BY SINUM
+2022-08-09 10:23:37.317 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==> Parameters: SS-1(String)
+2022-08-09 10:23:37.364 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : <==      Total: 1
+2022-08-09 10:23:37.365 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysStartDie            : ==>  Preparing: SELECT SIDATE, SIDIE FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:37.366 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysStartDie            : ==> Parameters: SS-1(String)
+2022-08-09 10:23:37.375 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysStartDie            : <==      Total: 1
+2022-08-09 10:23:37.375 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysCondition           : ==>  Preparing: SELECT SMSTATUS FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:37.376 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysCondition           : ==> Parameters: SS-1(String)
+2022-08-09 10:23:37.384 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysCondition           : <==      Total: 1
+2022-08-09 10:23:37.385 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysLifespan            : ==>  Preparing: SELECT SIDATE, TRUNC(SIDIE-SIDATE) ALLDATE ,TRUNC(100-((SIDIE-SYSDATE)/(SIDIE-SIDATE)*100), 1)||'%' NOWPERCENT , SIDIE, TRUNC(SIDIE-SYSDATE) LEFTENDDAT FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:37.385 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysLifespan            : ==> Parameters: SS-1(String)
+2022-08-09 10:23:37.394 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysLifespan            : <==      Total: 1
+2022-08-09 10:23:37.395 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectMaint      : ==>  Preparing: SELECT SIMAINT, SIDATE, TO_DATE(SIDATE+SIMAINT) NEXTDAT, TRUNC((100/((SIDATE+SIMAINT)-SYSDATE)), 1)||'%' NOWPERCENT2 FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:37.395 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectMaint      : ==> Parameters: SS-1(String)
+2022-08-09 10:23:37.404 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectMaint      : <==      Total: 1
+2022-08-09 10:23:39.769 DEBUG 15308 --- [http-nio-81-exec-6] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR, M.SYSADMIN, (select ename from employee where ecode = m.sysadmin)ename, (select eposition from employee where ecode = m.sysadmin)eposition FROM SYSINFO S, PROCINFO P, SYSMAN M WHERE S.PICODEID = P.PICODEID AND S.SINUM = M.SINUM ORDER BY SINUM
+2022-08-09 10:23:39.769 DEBUG 15308 --- [http-nio-81-exec-6] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==> Parameters: 
+2022-08-09 10:23:39.816 DEBUG 15308 --- [http-nio-81-exec-6] c.c.p.s.m.SysinfoMapper.selectSysAll     : <==      Total: 4
+2022-08-09 10:23:39.817 DEBUG 15308 --- [http-nio-81-exec-6] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==>  Preparing: SELECT PICODEID, PINAME FROM PROCINFO
+2022-08-09 10:23:39.817 DEBUG 15308 --- [http-nio-81-exec-6] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==> Parameters: 
+2022-08-09 10:23:39.826 DEBUG 15308 --- [http-nio-81-exec-6] c.c.p.s.m.SysinfoMapper.selectPicoid     : <==      Total: 7
+2022-08-09 10:23:41.813 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, M.SMSTATUS, M.SMMNTEND, M.SIMAINT, M.SIDATE, M.SIDIE, M.SYSADMIN, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR FROM SYSINFO S, SYSMAN M, PROCINFO P WHERE S.SINUM = M.SINUM(+) AND S.SINUM = P.SINUM(+) AND S.SINUM = ? ORDER BY SINUM
+2022-08-09 10:23:41.814 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==> Parameters: SS-3(String)
+2022-08-09 10:23:41.865 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : <==      Total: 1
+2022-08-09 10:23:41.866 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.S.selectSysStartDie            : ==>  Preparing: SELECT SIDATE, SIDIE FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:41.866 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.S.selectSysStartDie            : ==> Parameters: SS-3(String)
+2022-08-09 10:23:41.875 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.S.selectSysStartDie            : <==      Total: 1
+2022-08-09 10:23:41.875 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.S.selectSysCondition           : ==>  Preparing: SELECT SMSTATUS FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:41.876 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.S.selectSysCondition           : ==> Parameters: SS-3(String)
+2022-08-09 10:23:41.884 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.S.selectSysCondition           : <==      Total: 1
+2022-08-09 10:23:41.885 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.S.selectSysLifespan            : ==>  Preparing: SELECT SIDATE, TRUNC(SIDIE-SIDATE) ALLDATE ,TRUNC(100-((SIDIE-SYSDATE)/(SIDIE-SIDATE)*100), 1)||'%' NOWPERCENT , SIDIE, TRUNC(SIDIE-SYSDATE) LEFTENDDAT FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:41.886 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.S.selectSysLifespan            : ==> Parameters: SS-3(String)
+2022-08-09 10:23:41.894 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.S.selectSysLifespan            : <==      Total: 1
+2022-08-09 10:23:41.895 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.SysinfoMapper.selectMaint      : ==>  Preparing: SELECT SIMAINT, SIDATE, TO_DATE(SIDATE+SIMAINT) NEXTDAT, TRUNC((100/((SIDATE+SIMAINT)-SYSDATE)), 1)||'%' NOWPERCENT2 FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:41.895 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.SysinfoMapper.selectMaint      : ==> Parameters: SS-3(String)
+2022-08-09 10:23:41.905 DEBUG 15308 --- [http-nio-81-exec-3] c.c.p.s.m.SysinfoMapper.selectMaint      : <==      Total: 1
+2022-08-09 10:23:43.552 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR, M.SYSADMIN, (select ename from employee where ecode = m.sysadmin)ename, (select eposition from employee where ecode = m.sysadmin)eposition FROM SYSINFO S, PROCINFO P, SYSMAN M WHERE S.PICODEID = P.PICODEID AND S.SINUM = M.SINUM ORDER BY SINUM
+2022-08-09 10:23:43.552 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==> Parameters: 
+2022-08-09 10:23:43.600 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.SysinfoMapper.selectSysAll     : <==      Total: 4
+2022-08-09 10:23:43.601 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==>  Preparing: SELECT PICODEID, PINAME FROM PROCINFO
+2022-08-09 10:23:43.601 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==> Parameters: 
+2022-08-09 10:23:43.610 DEBUG 15308 --- [http-nio-81-exec-1] c.c.p.s.m.SysinfoMapper.selectPicoid     : <==      Total: 7
+2022-08-09 10:23:46.247 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, M.SMSTATUS, M.SMMNTEND, M.SIMAINT, M.SIDATE, M.SIDIE, M.SYSADMIN, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR FROM SYSINFO S, SYSMAN M, PROCINFO P WHERE S.SINUM = M.SINUM(+) AND S.SINUM = P.SINUM(+) AND S.SINUM = ? ORDER BY SINUM
+2022-08-09 10:23:46.248 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==> Parameters: SS-4(String)
+2022-08-09 10:23:46.297 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : <==      Total: 1
+2022-08-09 10:23:46.298 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysStartDie            : ==>  Preparing: SELECT SIDATE, SIDIE FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:46.298 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysStartDie            : ==> Parameters: SS-4(String)
+2022-08-09 10:23:46.307 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysStartDie            : <==      Total: 1
+2022-08-09 10:23:46.307 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysCondition           : ==>  Preparing: SELECT SMSTATUS FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:46.307 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysCondition           : ==> Parameters: SS-4(String)
+2022-08-09 10:23:46.315 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysCondition           : <==      Total: 1
+2022-08-09 10:23:46.316 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysLifespan            : ==>  Preparing: SELECT SIDATE, TRUNC(SIDIE-SIDATE) ALLDATE ,TRUNC(100-((SIDIE-SYSDATE)/(SIDIE-SIDATE)*100), 1)||'%' NOWPERCENT , SIDIE, TRUNC(SIDIE-SYSDATE) LEFTENDDAT FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:46.316 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysLifespan            : ==> Parameters: SS-4(String)
+2022-08-09 10:23:46.324 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysLifespan            : <==      Total: 1
+2022-08-09 10:23:46.324 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectMaint      : ==>  Preparing: SELECT SIMAINT, SIDATE, TO_DATE(SIDATE+SIMAINT) NEXTDAT, TRUNC((100/((SIDATE+SIMAINT)-SYSDATE)), 1)||'%' NOWPERCENT2 FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:46.325 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectMaint      : ==> Parameters: SS-4(String)
+2022-08-09 10:23:46.333 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectMaint      : <==      Total: 1
+2022-08-09 10:23:48.052 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR, M.SYSADMIN, (select ename from employee where ecode = m.sysadmin)ename, (select eposition from employee where ecode = m.sysadmin)eposition FROM SYSINFO S, PROCINFO P, SYSMAN M WHERE S.PICODEID = P.PICODEID AND S.SINUM = M.SINUM ORDER BY SINUM
+2022-08-09 10:23:48.053 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==> Parameters: 
+2022-08-09 10:23:48.101 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectSysAll     : <==      Total: 4
+2022-08-09 10:23:48.101 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==>  Preparing: SELECT PICODEID, PINAME FROM PROCINFO
+2022-08-09 10:23:48.102 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==> Parameters: 
+2022-08-09 10:23:48.111 DEBUG 15308 --- [http-nio-81-exec-8] c.c.p.s.m.SysinfoMapper.selectPicoid     : <==      Total: 7
+2022-08-09 10:23:49.899 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, M.SMSTATUS, M.SMMNTEND, M.SIMAINT, M.SIDATE, M.SIDIE, M.SYSADMIN, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR FROM SYSINFO S, SYSMAN M, PROCINFO P WHERE S.SINUM = M.SINUM(+) AND S.SINUM = P.SINUM(+) AND S.SINUM = ? ORDER BY SINUM
+2022-08-09 10:23:49.900 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==> Parameters: SS-2(String)
+2022-08-09 10:23:49.949 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : <==      Total: 1
+2022-08-09 10:23:49.950 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysStartDie            : ==>  Preparing: SELECT SIDATE, SIDIE FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:49.951 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysStartDie            : ==> Parameters: SS-2(String)
+2022-08-09 10:23:49.959 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysStartDie            : <==      Total: 1
+2022-08-09 10:23:49.960 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysCondition           : ==>  Preparing: SELECT SMSTATUS FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:23:49.960 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysCondition           : ==> Parameters: SS-2(String)
+2022-08-09 10:23:49.968 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysCondition           : <==      Total: 1
+2022-08-09 10:23:49.969 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysLifespan            : ==>  Preparing: SELECT SIDATE, TRUNC(SIDIE-SIDATE) ALLDATE ,TRUNC(100-((SIDIE-SYSDATE)/(SIDIE-SIDATE)*100), 1)||'%' NOWPERCENT , SIDIE, TRUNC(SIDIE-SYSDATE) LEFTENDDAT FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:49.969 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysLifespan            : ==> Parameters: SS-2(String)
+2022-08-09 10:23:49.978 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.S.selectSysLifespan            : <==      Total: 1
+2022-08-09 10:23:49.979 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectMaint      : ==>  Preparing: SELECT SIMAINT, SIDATE, TO_DATE(SIDATE+SIMAINT) NEXTDAT, TRUNC((100/((SIDATE+SIMAINT)-SYSDATE)), 1)||'%' NOWPERCENT2 FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:23:49.979 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectMaint      : ==> Parameters: SS-2(String)
+2022-08-09 10:23:49.988 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectMaint      : <==      Total: 1
+2022-08-09 10:24:31.667 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR, M.SYSADMIN, (select ename from employee where ecode = m.sysadmin)ename, (select eposition from employee where ecode = m.sysadmin)eposition FROM SYSINFO S, PROCINFO P, SYSMAN M WHERE S.PICODEID = P.PICODEID AND S.SINUM = M.SINUM ORDER BY SINUM
+2022-08-09 10:24:31.668 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==> Parameters: 
+2022-08-09 10:24:31.718 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectSysAll     : <==      Total: 4
+2022-08-09 10:24:31.718 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==>  Preparing: SELECT PICODEID, PINAME FROM PROCINFO
+2022-08-09 10:24:31.719 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==> Parameters: 
+2022-08-09 10:24:31.727 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectPicoid     : <==      Total: 7
+2022-08-09 10:24:32.983 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR, M.SYSADMIN, (select ename from employee where ecode = m.sysadmin)ename, (select eposition from employee where ecode = m.sysadmin)eposition FROM SYSINFO S, PROCINFO P, SYSMAN M WHERE S.PICODEID = P.PICODEID AND S.SINUM = M.SINUM ORDER BY SINUM
+2022-08-09 10:24:32.983 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==> Parameters: 
+2022-08-09 10:24:33.031 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectSysAll     : <==      Total: 4
+2022-08-09 10:24:33.031 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==>  Preparing: SELECT PICODEID, PINAME FROM PROCINFO
+2022-08-09 10:24:33.032 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==> Parameters: 
+2022-08-09 10:24:33.040 DEBUG 15308 --- [http-nio-81-exec-7] c.c.p.s.m.SysinfoMapper.selectPicoid     : <==      Total: 7
+2022-08-09 10:24:35.249 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, M.SMSTATUS, M.SMMNTEND, M.SIMAINT, M.SIDATE, M.SIDIE, M.SYSADMIN, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR FROM SYSINFO S, SYSMAN M, PROCINFO P WHERE S.SINUM = M.SINUM(+) AND S.SINUM = P.SINUM(+) AND S.SINUM = ? ORDER BY SINUM
+2022-08-09 10:24:35.249 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==> Parameters: SS-1(String)
+2022-08-09 10:24:35.299 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : <==      Total: 1
+2022-08-09 10:24:35.299 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysStartDie            : ==>  Preparing: SELECT SIDATE, SIDIE FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:24:35.300 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysStartDie            : ==> Parameters: SS-1(String)
+2022-08-09 10:24:35.308 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysStartDie            : <==      Total: 1
+2022-08-09 10:24:35.309 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysCondition           : ==>  Preparing: SELECT SMSTATUS FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:24:35.309 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysCondition           : ==> Parameters: SS-1(String)
+2022-08-09 10:24:35.317 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysCondition           : <==      Total: 1
+2022-08-09 10:24:35.318 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysLifespan            : ==>  Preparing: SELECT SIDATE, TRUNC(SIDIE-SIDATE) ALLDATE ,TRUNC(100-((SIDIE-SYSDATE)/(SIDIE-SIDATE)*100), 1)||'%' NOWPERCENT , SIDIE, TRUNC(SIDIE-SYSDATE) LEFTENDDAT FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:24:35.318 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysLifespan            : ==> Parameters: SS-1(String)
+2022-08-09 10:24:35.327 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.S.selectSysLifespan            : <==      Total: 1
+2022-08-09 10:24:35.327 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectMaint      : ==>  Preparing: SELECT SIMAINT, SIDATE, TO_DATE(SIDATE+SIMAINT) NEXTDAT, TRUNC((100/((SIDATE+SIMAINT)-SYSDATE)), 1)||'%' NOWPERCENT2 FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:24:35.328 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectMaint      : ==> Parameters: SS-1(String)
+2022-08-09 10:24:35.336 DEBUG 15308 --- [http-nio-81-exec-10] c.c.p.s.m.SysinfoMapper.selectMaint      : <==      Total: 1
+2022-08-09 10:37:13.469 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR, M.SYSADMIN, (select ename from employee where ecode = m.sysadmin)ename, (select eposition from employee where ecode = m.sysadmin)eposition FROM SYSINFO S, PROCINFO P, SYSMAN M WHERE S.PICODEID = P.PICODEID AND S.SINUM = M.SINUM ORDER BY SINUM
+2022-08-09 10:37:13.470 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectSysAll     : ==> Parameters: 
+2022-08-09 10:37:13.516 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectSysAll     : <==      Total: 4
+2022-08-09 10:37:13.517 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==>  Preparing: SELECT PICODEID, PINAME FROM PROCINFO
+2022-08-09 10:37:13.517 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectPicoid     : ==> Parameters: 
+2022-08-09 10:37:13.526 DEBUG 15308 --- [http-nio-81-exec-5] c.c.p.s.m.SysinfoMapper.selectPicoid     : <==      Total: 7
+2022-08-09 10:37:15.300 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==>  Preparing: SELECT S.SINUM, S.SINAME, S.SISAFTEM, M.SMSTATUS, M.SMMNTEND, M.SIMAINT, M.SIDATE, M.SIDIE, M.SYSADMIN, P.PIONE, P.PITWO, P.PITHREE, P.PIFOUR FROM SYSINFO S, SYSMAN M, PROCINFO P WHERE S.SINUM = M.SINUM(+) AND S.SINUM = P.SINUM(+) AND S.SINUM = ? ORDER BY SINUM
+2022-08-09 10:37:15.301 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : ==> Parameters: SS-1(String)
+2022-08-09 10:37:15.348 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectSysDetAll  : <==      Total: 1
+2022-08-09 10:37:15.349 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysStartDie            : ==>  Preparing: SELECT SIDATE, SIDIE FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:37:15.349 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysStartDie            : ==> Parameters: SS-1(String)
+2022-08-09 10:37:15.358 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysStartDie            : <==      Total: 1
+2022-08-09 10:37:15.359 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysCondition           : ==>  Preparing: SELECT SMSTATUS FROM SYSMAN WHERE SINUM= ?
+2022-08-09 10:37:15.359 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysCondition           : ==> Parameters: SS-1(String)
+2022-08-09 10:37:15.367 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysCondition           : <==      Total: 1
+2022-08-09 10:37:15.368 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysLifespan            : ==>  Preparing: SELECT SIDATE, TRUNC(SIDIE-SIDATE) ALLDATE ,TRUNC(100-((SIDIE-SYSDATE)/(SIDIE-SIDATE)*100), 1)||'%' NOWPERCENT , SIDIE, TRUNC(SIDIE-SYSDATE) LEFTENDDAT FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:37:15.368 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysLifespan            : ==> Parameters: SS-1(String)
+2022-08-09 10:37:15.377 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.S.selectSysLifespan            : <==      Total: 1
+2022-08-09 10:37:15.378 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectMaint      : ==>  Preparing: SELECT SIMAINT, SIDATE, TO_DATE(SIDATE+SIMAINT) NEXTDAT, TRUNC((100/((SIDATE+SIMAINT)-SYSDATE)), 1)||'%' NOWPERCENT2 FROM SYSMAN WHERE SINUM = ?
+2022-08-09 10:37:15.379 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectMaint      : ==> Parameters: SS-1(String)
+2022-08-09 10:37:15.387 DEBUG 15308 --- [http-nio-81-exec-2] c.c.p.s.m.SysinfoMapper.selectMaint      : <==      Total: 1
+2022-08-09 11:14:10.574  INFO 15308 --- [Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-08-09 11:14:10.659  INFO 15308 --- [Thread-6] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2022-08-09 11:14:10.821  INFO 15308 --- [restartedMain] co.carboni.prj.CarboniMesApplication     : Starting CarboniMesApplication using Java 11.0.13 on YD-15 with PID 15308 (C:\Users\admin\git\Caboni\Carboni-mes\target\classes started by admin in C:\Users\admin\git\Caboni\Carboni-mes)
+2022-08-09 11:14:10.822 DEBUG 15308 --- [restartedMain] co.carboni.prj.CarboniMesApplication     : Running with Spring Boot v2.7.1, Spring v5.3.21
+2022-08-09 11:14:10.822  INFO 15308 --- [restartedMain] co.carboni.prj.CarboniMesApplication     : No active profile set, falling back to 1 default profile: "default"
+2022-08-09 11:14:11.366  INFO 15308 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 81 (http)
+2022-08-09 11:14:11.367  INFO 15308 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-08-09 11:14:11.368  INFO 15308 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.64]
+2022-08-09 11:14:11.406  INFO 15308 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-08-09 11:14:11.406  INFO 15308 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 579 ms
+2022-08-09 11:14:11.767  INFO 15308 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@377cff84, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@60e3d5b, org.springframework.security.web.context.SecurityContextPersistenceFilter@48a6a2d3, org.springframework.security.web.header.HeaderWriterFilter@5f1a9253, org.springframework.security.web.authentication.logout.LogoutFilter@3cf000aa, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@3315c7d8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@557942ea, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5e7aca1c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4e4066ef, org.springframework.security.web.session.SessionManagementFilter@14017b3c, org.springframework.security.web.access.ExceptionTranslationFilter@6d1e0b96, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@30ef1d28]
+2022-08-09 11:14:11.906  INFO 15308 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-08-09 11:14:11.919  INFO 15308 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 81 (http) with context path ''
+2022-08-09 11:14:11.923  INFO 15308 --- [restartedMain] co.carboni.prj.CarboniMesApplication     : Started CarboniMesApplication in 1.182 seconds (JVM running for 3334.459)
+2022-08-09 11:14:11.926  INFO 15308 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged

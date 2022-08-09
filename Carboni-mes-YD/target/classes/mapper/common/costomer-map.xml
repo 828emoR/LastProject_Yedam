@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.carboni.prj.common.mapper.CostomerMapper">
+
+	<select id="selectCostAll" resultType="co.carboni.prj.common.vo.CostomerVO">
+		SELECT * FROM COSTOMER ORDER BY TO_NUMBER(CSCODE)
+	</select>
+	<insert id="costInsert" parameterType="co.carboni.prj.common.vo.CostomerVO">
+		INSERT INTO COSTOMER
+		VALUES(COSTOMER_CSCODE_SEQ.NEXTVAL, #{csname}, #{csnum}, #{cstel}, #{csgb}, #{csnote})
+	</insert>
+	<delete id="costDelete" parameterType="co.carboni.prj.common.vo.CostomerVO">
+		DELETE FROM COSTOMER
+		WHERE CSCODE = #{cscode}
+	</delete>
+	<update id="costUpdate" parameterType="co.carboni.prj.common.vo.CostomerVO">
+		UPDATE COSTOMER
+		<set>
+			CSNAME = #{csname},
+			CSNUM = #{csnum},
+			CSTEL = #{cstel},
+			CSGB = #{csgb},
+			CSNOTE = #{csnote},
+		</set>
+		WHERE CSCODE = #{cscode}
+	</update>
+	<select id="costEx" resultType="map">
+		SELECT CSCODE 거래처코드, CSNAME 거래처명, CSNUM 사업자번호, CSTEL 전화번호, CSGB 거래처구분, CSNOTE 비고
+		FROM COSTOMER ORDER BY TO_NUMBER(CSCODE)
+	</select>
+	
+	
+</mapper>

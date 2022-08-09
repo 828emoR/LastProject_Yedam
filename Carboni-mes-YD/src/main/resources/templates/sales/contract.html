@@ -1,0 +1,531 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+
+<style>
+.btn-secondary {
+	margin-left: 5px;
+}
+
+span {
+	color: #494949;
+	font-weight: bold;
+}
+
+#pageing {
+	border: 1px solid #e6e6e6;
+	line-height: 30px;
+	background-color: #fff;
+	color: #999999;
+}
+
+.input {
+	height: 23px;
+	margin-left: 10px;
+	margin-right: 10px;
+	display: inline-block;
+	padding: 0 10px;
+	vertical-align: middle;
+	border: 1px solid #dddddd;
+	width: 20%;
+	color: rgb(94, 94, 94);
+	border-radius: 5px;
+	text-align: center;
+}
+
+#leftinput, #rightinput {
+	margin-right: 18px;
+}
+#leftinput1, #rightinput1 {
+	background-color: #f1f1f1;
+}
+
+#startCndate {
+	margin-right: 10px;
+}
+
+#endCndate {
+	margin-left: 5px;
+}
+
+.dataTable-input {
+	height: 40px;
+}
+
+.nameing {
+	float: right;
+	font-size: medium;
+	font-weight: normal;
+	margin-top: 15px;
+}
+
+#modal {
+	display: none;
+}
+
+.title {
+	text-align: center;
+	margin-bottom: 10px;
+	margin-top: -10px;
+}
+</style>
+</head>
+
+<body class="sb-nav-fixed">
+	<th:block layout:fragment="main">
+		<div class="container-fluid px-4">
+		<div class="nameing"><a href="/" style="text-decoration-line: none; color: black"><i class="bi bi-house-door-fill"></i></a>>영업관리>수주관리</div>
+			<h1 class="mt-4">수주 관리</h1>
+			
+			<!-- 메인화면 버튼 -->
+			<div class="card-header">
+				<div style="display: flex; justify-content: flex-end;">
+					<button type="button" id="searchBtn" class="btn btn-secondary">조회</button>
+					<button type="button" id="removeBtn" class="btn btn-secondary" sec:authorize="hasRole('ROLE_a')">삭제</button>
+					<button type="button" id="clearBtn" class="btn btn-secondary">새자료</button>
+					<button type="button" id="exelBtn" class="btn btn-secondary">엑셀</button>
+					<button type="button" id="pdfBtn" class="btn btn-secondary">PDF</button>
+							
+				</div>
+			</div>
+
+			<!-- 입력폼 -->
+			<form autocomplete="off" id="dataForm">
+			<!-- 메인화면 검색 -->
+			<div class="card mb-4" id="pageing">
+				<div class="card-body">
+					<span> 수주일자<input type="date" name="startCndate" id="startCndate" class="input" />~ 
+					            <input type="date" name="endCndate" id="endCndate" class="input" /><br> 
+					
+						   업체정보<input type="text" id="leftinput" class="input" placeholder="거래처 검색" readonly="readonly">
+						         <input type="text" id="leftinput1" class="input" placeholder="거래처 코드" readonly="readonly"><br> 
+							
+						   제품정보<input type="text" id="rightinput" class="input" placeholder="제품 검색" readonly="readonly">
+						        <input type="text" id="rightinput1" class="input" placeholder="제품 코드" readonly="readonly"><br>
+				           수주번호<input type="text" id="cninput" class="input" placeholder="수주번호 입력"><br>
+
+					</span>
+				</div>
+			</div>
+			</form>
+			<!-- 메인화면 그리드 -->
+			<div class="card mb-4">
+				<div class="card-header">
+					<i class="fas fa-table me-1"></i> 수주목록
+				</div>
+				<div id="test" class="container-fluid px-4">
+					<div id="grid"></div>
+					</div>
+			</div>
+		</div>
+
+		<!-- 모달  -->
+		<div id="modal">
+
+			<!-- 거래처 모달 -->
+			<div id="contractModal" style="padding: 20px;" title="거래처조회">
+				<div class="container">
+					<div class="title">
+						거래처명<input type="text" id="csinput" class="input" placeholder="거래처명"> 
+						<button id="cssearchBtn" class="btn btn-secondary">조회</button>
+						<br>
+					</div>
+					
+				</div>
+				
+				<!-- 거래처모달 그리드 -->
+				<div class="container-fluid px-4">
+					<div class="card mb-4">
+						<div class="card-header" style="text-align: center;">
+							<i class="fas fa-table me-1"></i> 거래처정보
+						</div>
+						<div id="gridcomp"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 제품정보 모달 -->
+			<div id="prodNameModal" style="padding: 20px;" title="제품정보조회">
+				<div class="container">
+					<div class="title">
+						제품명<input type="text" id="giinput" class="input" placeholder="제품명" > 
+						<button id="gisearchBtn" class="btn btn-secondary">조회</button>
+						<br>
+					</div>
+				</div>
+				
+				<!-- 제품모달 그리드 -->
+				<div class="container-fluid px-4">
+					<div class="card mb-4">
+						<div class="card-header" style="text-align: center;">
+							<i class="fas fa-table me-1"></i> 제품정보
+						</div>
+						<div id="gridpro"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+		<script>
+		
+			$(function() {
+			
+			
+				/* 수주 그리드 시작 */
+				const gridData = [];
+	
+				const grid = new tui.Grid({
+					el : document.getElementById('grid'),
+					data : gridData,
+					scrollX : false,
+					rowHeaders : [ 'rowNum', 'checkbox'],
+					columns : [ {
+						header : '수주번호',
+						name : 'cnnum',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true ,
+					}, {
+						header : '거래처명',
+						name : 'csname',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true,
+					}, {
+						header : '제품명',
+						name : 'giname',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					},{
+						header : '제품단위',
+						name : 'giunit',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					}, {
+						header : '수주수량',
+						name : 'cnam',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					}, {
+						header : '수주잔량',
+						name : 'cnrest',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					}, {
+						header : '수주일자',
+						name : 'cndate',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					}, {
+						header : '납기일자',
+						name : 'cnperiod',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					}, {
+						header : '진행상태',
+						name : 'cnstatus',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					} ]
+				});
+
+
+				/*거래처 모달 그리드*/
+				const totaldata = [];
+
+				const gurae = new tui.Grid({
+					el : document.getElementById('gridcomp'),
+					data : totaldata,
+					scrollX : false,
+					rowHeaders : [ 'rowNum' ],
+					bodyHeight : 430,
+					columns : [ {
+						header : '거래처코드',
+						name : 'cscode',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					}, {
+						header : '거래처명',
+						name : 'csname',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					}, {
+						header : '사업자번호',
+						name : 'csnum',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					}, {
+						header : '전화번호',
+						name : 'cstel',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					} ]
+				});
+				
+				/*제품정보 그리드*/
+				const giupdata = [];
+
+				const jepoom = new tui.Grid({
+					el : document.getElementById('gridpro'),
+					data : giupdata,
+					scrollX : false,
+					rowHeaders : [ 'rowNum' ],
+					bodyHeight : 430,
+					columns : [ {
+						header : '제품코드',
+						name : 'gicode',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					}, {
+						header : '제품명',
+						name : 'giname',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					}, {
+						header : '제품단위',
+						name : 'giunit',
+						align : 'center',
+						sortingType : 'desc',
+						sortable : true
+					} ]
+				});
+				
+				
+			/* 수주일자 조회 */
+			$('#searchBtn').on('click', function(){
+				var startDt = $('#startCndate').val()
+				var endDt = $('#endCndate').val()
+				var cusCode = $('#leftinput1').val()
+				var goodsCode = $('#rightinput1').val()
+				var cnCode = $('#cninput').val()
+				   if($('#startCndate').val()== '' && $('#endCndate').val()== '' && $('#leftinput').val()== '' && $('#rightinput').val() == '' && $('#cninput').val() == '') {
+					  swal('다시 입력하세요!', "입력되지 않은 수주정보가 있습니다!", 'warning') 
+					  
+				} else {
+				$.ajax({
+					url: 'cndateList',
+					method: 'POST',
+					data : {startDt, endDt, cusCode, goodsCode, cnCode},
+					success: function(result) {
+						grid.refreshLayout();
+						grid.resetData(result)
+					}
+				})
+				}
+			})
+			
+			/* 수주삭제 버튼 */
+			$('#removeBtn').on('click', function() {
+				delGrid = grid.getCheckedRows()
+				var cnList = delGrid.map((e) => {return e.cnnum})
+				console.log(cnList)
+				$.ajax({
+					url: 'delCnList',
+					method: 'POST',
+					data: {cnList},
+					success: function(){
+						grid.removeCheckedRows('')
+						swal("삭제 성공!!", "선택한 수주내역이 삭제되었습니다.", "success");
+					}
+					
+				})
+				
+			})
+			
+			/* 새자료 - 초기화버튼 */
+			$('#clearBtn').on('click', function() {
+				fnFormClear();
+			})
+			
+			function fnFormClear() {
+				document.getElementById('dataForm').reset();
+				grid.resetData(gridData);
+				gurae.resetData(totaldata);
+				jepoom.resetData(giupdata);
+			}
+				
+				/*메이크 모달*/
+				function makeModal(e, fnc) {
+					var dialog = $(e).dialog({
+						autoOpen : false,
+						height : 742,
+						width : 700,
+						modal : true,
+						buttons : {
+							'확인' : fnc,
+							'취소' : function() {
+								gurae.clear();
+								jepoom.clear();
+								$(this).dialog('close')
+							}
+						}
+					});
+					$('.ui-dialog-buttonset').children().attr('class', 'btn btn-secondary')
+					$('.ui-dialog-titlebar-close').html('X').css('border','none')
+						gurae.clear();
+						jepoom.clear();
+					return dialog;
+				}
+
+				var modal1 = makeModal("#contractModal", check)
+					modal1 = makeModal("#contractModal", check1)
+				var modal2 = makeModal("#prodNameModal", giup)
+				    modal2 = makeModal("#prodNameModal", giup1)
+
+				/*거래처정보모달*/
+				$("#leftinput").on("click", function() {
+					$("#contractModal").css('display', '')
+					modal1.dialog('open')
+					//전체거래처 바로 띄우는 ajax 호출 
+					$.ajax({
+						url:'allCostomerList',
+						method: 'POST',
+						success: function(result) {
+							gurae.refreshLayout();
+							gurae.resetData(result)
+							gurae.on('click', e => {
+								var rk = e.rowKey
+								csn = gurae.getRow(rk).csname
+								csc = gurae.getRow(rk).cscode
+							})
+							
+						}
+					})
+				})
+				
+				/* 거래처명 검색 이벤트 */
+				$('#cssearchBtn').on('click', function() {
+					var csname = $('#csinput').val()
+					$.ajax({
+						url:'costomerList',
+						method: 'POST',
+						data : {csname},
+						success: function(result) {
+							gurae.resetData(result)
+							gurae.on('click', e => {
+							var rk = e.rowKey
+							csn1 = gurae.getRow(rk).csname
+							csc1 = gurae.getRow(rk).cscode
+						})
+						}
+					})
+				})
+				/*거래처명 검색조회 모달 확인버튼 눌렀을떄 */
+				function check() {
+					$('#leftinput').val(csn1)
+					$('#leftinput1').val(csc1)
+					modal1.dialog('close')
+				}
+				
+				/*거래처명 전체조회 모달 확인버튼 눌렀을떄 */
+				function check1() {
+					$('#leftinput').val(csn)
+					$('#leftinput1').val(csc)
+					modal1.dialog('close')
+				}
+				
+
+				
+
+				/* 제품정보 모달 */
+				$("#rightinput").on("click", function() {
+					$("#prodNameModal").css('display', '')
+					modal2.dialog('open')
+					//전체제품 바로 띄우는 ajax 호출
+					$.ajax({
+						url:'allGoodsList',
+						method: 'POST',
+						success: function(result) {
+							jepoom.refreshLayout();
+							jepoom.resetData(result)
+							jepoom.on('click', e => {
+								var rok = e.rowKey
+								gin = jepoom.getRow(rok).giname
+								gic = jepoom.getRow(rok).gicode
+							})
+						}
+					})
+				})
+				
+				/* 제품정보 모달 검색 이벤트 */
+				$('#gisearchBtn').on('click', function() {
+					var giname = $('#giinput').val()
+					$.ajax({
+						url:'goodsList',
+						method: 'POST',
+						data : {giname},
+						success: function(result) {
+							jepoom.resetData(result)
+							jepoom.on('click', e => {
+							var rok = e.rowKey
+							gin1 = jepoom.getRow(rok).giname
+							gic1 = jepoom.getRow(rok).gicode
+							})
+						}
+					})
+				})
+				
+				/*제품정보 검색조회 모달 확인버튼 눌렀을떄 */
+				function giup() {
+					$('#rightinput').val(gin1)
+					$('#rightinput1').val(gic1)
+					modal2.dialog('close')
+				}
+				
+				/*제품정보 전체조회 모달 확인버튼 눌렀을떄 */
+				function giup1() {
+					$('#rightinput').val(gin)
+					$('#rightinput1').val(gic)
+					modal2.dialog('close')
+				}
+				
+				/* 엑셀버튼 눌렀을 때 */
+				$('#exelBtn').on('click', function() {
+					location.href="contractInsertExel"
+				})
+				
+				 /*------pdf-------------*/
+                $('#pdfBtn').on('click',function(){
+                	
+                	 //pdf_wrap을 canvas객체로 변환
+                	   html2canvas($('#test')[0]).then(function(canvas) {
+                	     
+                	    var imgData = canvas.toDataURL('image/png'); //캔버스를 이미지로 변환
+                	    var imgWidth = 180; // 이미지 가로 길이(mm) / A4 기준 210mm
+                        var pageHeight = imgWidth * 1.3; // 출력 페이지 세로 길이 계산 A4 기준
+                        var imgHeight = canvas.height * imgWidth / canvas.width;
+                        var heightLeft = imgHeight;
+                        var margin = 10;
+                        var doc = new jsPDF('p', 'mm', 'a4'); //jspdf객체 생성
+                	    var position =0;
+                	    doc.addImage(imgData, 'PNG',margin,position,imgWidth,imgHeight); //이미지를 기반으로 pdf생성
+                	    heightLeft -=pageHeight;
+                	    doc.save('contract.pdf'); //pdf저장
+                	  });
+                })
+               
+				
+			
+			})
+				
+		</script>
+	</th:block>
+</body>
+</html>
